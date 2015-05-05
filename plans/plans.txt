@@ -1,0 +1,34 @@
+have a menu that asks for 1 or 2 players
+show menu options to: toggle on/off timer for entering answer and bullseye round
+	also buttons to show rules of 
+ask for name inputs separately
+
+The game is played in a standard order of: Bullseye Round (if enabled in the
+options menu), Single Round, Double Round, Triple Round, and finally the Fast
+Money Round. The Bullseye Round questions are based off of the possible list of
+questions from the Single Round, Double Round, and Triple Round. The Single
+Round questions can have a maximum of twelve available answers, and the Double
+Round and Triple Round can have a maximum of six. The goal by completing Single
+Round, Double Round, and Triple Round in total is for a family to receive 300
+or more points to be able to play the Fast Money Round to win money.
+
+
+bullseye round has that bullseye background and layout of divs like so: http://i.ytimg.com/vi/CmD45s5yvjg/0.jpg
+background img of people and everything. div box for the question on top of screen and user entry box lower
+once user inputs answer, change background to show board and either display the correct response or show big red x
+
+
+p1 will buzz in with 'Enter' and p1 will buzz with 'space'
+
+var currentRound;
+	changes based on the status of each round and questions are chosen based from that
+
+user inputs with match against data in questions after converting with this function:
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+
+websters thesaurus api key:
+6d956cae-16fb-4956-9f68-16972ff73f93
+http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/umpire?key=[MY_KEY_GOES_HERE]
