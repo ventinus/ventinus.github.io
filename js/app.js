@@ -7,10 +7,7 @@ var playerTwo = {
 	name: "",
 	score: 0
 };
-var players = {
-	playerOne,
-	playerTwo
-}
+
 var question, answers, answersLeft, myTimer, currentPlayer;
 var incorrectCounter = 0;
 var roundPoints = 0;
@@ -35,9 +32,10 @@ $('#names').submit(function(e){
 	}
 	if (formObj.bullseye === undefined) {
 		showCurrentPlayer(playerOne);
-		promptPlayerTurn();
+		promptPlayerTurn(singleURL);
 	} else {
-		promptPlayerTurn();
+		showCurrentPlayer(playerOne);
+		promptPlayerTurn(singleURL);
 	}
 })
 

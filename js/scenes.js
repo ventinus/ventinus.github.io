@@ -63,18 +63,18 @@ function hideDivs(objs) {
 	})
 }
 
-function promptPlayerTurn() {
+function promptPlayerTurn(url) {
 	$('#player-turn').show();
 	// grabQuestion(singleURL);
-	$.when(grabQuestion(singleURL)).done(function(){
+	$.when(grabQuestion(url)).done(function(){
 		$('#question').html(question);
 		renderScoreBoard(2,6);
-		startTimer();
+		startTimer(15);
 		roundPoints = 0;
 		incorrectCounter = 0;
 		stealOpportunity = false;
+		$('#response_form').append('<input type="text" id="user_guess" name="user_guess" class="user_guess text_box" autofocus><input type="submit">');
 	});
-	$('#response_form').append('<input type="text" id="user_guess" name="user_guess" class="user_guess text_box" autofocus><input type="submit">');
 }
 
 function renderScoreBoard(width, height) {
@@ -122,7 +122,7 @@ function renderAnswers(){
 	setTimeout(function(){
 		$('#player-turn').hide();
 		$('#question, #board,  #response_form').html("");
-		promptPlayerTurn();
+		promptPlayerTurn(singleURL);
 	}, 8000);
 }
 
@@ -144,7 +144,7 @@ function showIncorrectResponse() {
 	}, 2000);
 
 	if (incorrectCounter < 3) {
-		startTimer();
+		startTimer(15);
 	} else if (incorrectCounter === 3) {
 		playerRebuttal();
 	} else if (stealOpportunity === true) {

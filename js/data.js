@@ -98,7 +98,8 @@ function checkWords(searchResults, word) {
 	}
 
 
-	// to check the two arrays against each other, if the number returned is ever != -1, they duplicate and can break
+	// to check the two arrays against each other, if the number returned is ever != -1, 
+	// they duplicate and can break
 	var result;
 	$.each(answersLeft, function(j, answer){
 		answer.name = answer.name.toLowerCase();
@@ -117,7 +118,7 @@ function checkWords(searchResults, word) {
 							showCurrentPlayer(currentPlayer);
 						} else if (stealOpportunity === false) {
 							if (answersLeft.length > 0) {
-								startTimer();
+								startTimer(15);
 							} else if (answersLeft.length === 0) {
 								renderAnswers();
 								currentPlayer.score += roundPoints;
@@ -147,7 +148,7 @@ function playerRebuttal() {
 		currentPlayer = playerOne;
 	}
 	showCurrentPlayer(currentPlayer);
-	startTimer();
+	startTimer(15);
 	stealOpportunity = true;
 }
 
@@ -159,15 +160,14 @@ function getFormData(form, obj) {
   return obj;
 }
 
-function startTimer() {
+function startTimer(num) {
 	if (formObj.timer != undefined) {
 		setTimeout(function() {
 			$('#response_form').show();
-		  var seconds = 15;
+		  var seconds = num;
 		  $('#countdown').html("");
 		  myTimer = setInterval(function () {
-		    $('#countdown').text(seconds);
-
+		    $('#countdown').text(":" + seconds);
 			  if (seconds === 0) {
 			    clearInterval(myTimer);
 			    $('#response_form').hide();
@@ -188,5 +188,4 @@ function startTimer() {
 		}, 2000);
 	}
 }
-
 
