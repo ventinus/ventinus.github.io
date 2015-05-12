@@ -277,6 +277,9 @@ img {
 
 #play_pass_form {
 	text-align: center;
+  /*display: inline-block;*/
+  position: absolute;
+  left: 37.65%;
 }
 
 #play_pass_form h2 {
@@ -289,3 +292,27 @@ button {
 	cursor: pointer;
 }
 
+button:hover {
+	background-color: rgba(30,30,30,0.8);
+}
+
+#controls {
+	text-align: center;
+	margin-top: 100px;
+}
+
+#controls h1, #controls h2, button, #play_pass_form, #play_pass_form h2 {
+  background-color: rgba(230,230,230,0.8);
+  color: brown;
+  text-shadow: 1px 1px 3px black;
+}
+
+#controls h1 {
+	display: inline-block;
+	font-size: 45px;
+}
+
+#controls h2 {
+	display: inline-block;
+	font-size: 40px;
+}
