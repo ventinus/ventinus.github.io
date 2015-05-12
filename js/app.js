@@ -1,34 +1,3 @@
-// window onload, render the menu which contains: 
-	// form for player count and game options:
-		// bullseye round and timer on/off
-	// ul with anchor li's to show information modal for the bullseye round and game rules
-
-// on form submit, render form to enter first player name
-// if 2 player was selected
-	// on name entry submit, render second name entry
-
-// show for 5 seconds the controls to buzz in. "Player 1, buzz in with z(122). Player 2, buzz in with /(47)"
-
-// if bullseye is turned on
-	// fetch a question, display it on top, 
-	// start invisible 20 second timer (if it runs out, render a new question)
-	// listen for keyboard events: $('body').keydown(function(e){})
-	// once keydown, stop timer, show entry field, current player is who buzzed in, 
-		// start 15 second timer to enter response
-
-	// until ( (at least 1 answer is gotten && at least 1 incorrect response) || indexOf(answer) === 0 )
-		// keep switching between players 
-
-	// if answer is correct
-		// show answer and add to the running total of points for the round
-		// if (indexOf(answer) === 0) {
-			// playOrPass?()
-		// } else {
-			// switch current player and show entry field, start 15 sec timer
-		// }
-	// else 
-		// set current player to the other, show entry field, start 15 sec timer
-
 // game variables
 var gameOptions = { };
 var playerOne = {
@@ -41,7 +10,6 @@ var playerTwo = {
 };
 var myTimer, question, answers, answersLeft, currentPlayer, currentAnswerIndx;
 var incorrectCounter = roundPoints = loggedSubmissions = roundCounter = 0;
-roundCounter = 3;
 var stealOpportunity = false;
 var beginningOfRound = true;
 var computerNames = ["Gagne Family", "Hoop Family", "Canas Family", "Naff Family", "Romberg Family", 
