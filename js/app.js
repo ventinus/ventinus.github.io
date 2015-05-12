@@ -100,6 +100,8 @@ $namesForm.submit(function(e){
   playerOne.name += " Family";
 	if (playerTwo.name === undefined) {
 		playerTwo.name = computerNames[Math.floor(Math.random() * computerNames.length + 1)];
+	} else {
+		playerTwo.name += " Family";
 	}
 	$game.append($controlDiv);
 	setTimeout(function(){
