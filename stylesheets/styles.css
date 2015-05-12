@@ -44,8 +44,8 @@ input:focus {
 	bottom: 125px;
 	color: yellow;
 	text-shadow: 2px 2px black;
-	line-height: 60px;
-	font-size: 40px;
+	line-height: 1.5em;
+	font-size: 2.5em;
 	font-weight: bold;
 }
 
@@ -147,8 +147,8 @@ input[type=checkbox]:after {
 #timer[type=checkbox]:after {
 	color: yellow;
 	text-shadow: 2px 2px black;
-	line-height: 47px;
-	font-size: 33px;
+	line-height: 1.5em;
+	font-size: 2.5em;
 	font-weight: bold;
   background-color: red;
 }
@@ -274,3 +274,18 @@ img {
 	text-indent: 10px;
 	margin-bottom: 10px;
 }
+
+#play_pass_form {
+	text-align: center;
+}
+
+#play_pass_form h2 {
+	font-size: 40px;
+	display: inline;
+}
+
+button {
+	font-size: 40px;
+	cursor: pointer;
+}
+
