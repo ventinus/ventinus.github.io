@@ -1,35 +1,3 @@
-// window onload, render the menu which contains: 
-	// form for player count and game options:
-		// bullseye round and timer on/off
-	// ul with anchor li's to show information modal for the bullseye round and game rules
-
-// on form submit, render form to enter first player name
-// if 2 player was selected
-	// on name entry submit, render second name entry
-
-// show for 5 seconds the controls to buzz in. "Player 1, buzz in with z(122). Player 2, buzz in with /(47)"
-
-// if bullseye is turned on
-	// fetch a question, display it on top, 
-	// start invisible 20 second timer (if it runs out, render a new question)
-	// listen for keyboard events: $('body').keydown(function(e){})
-	// once keydown, stop timer, show entry field, current player is who buzzed in, 
-		// start 15 second timer to enter response
-
-	// until ( (at least 1 answer is gotten && at least 1 incorrect response) || indexOf(answer) === 0 )
-		// keep switching between players 
-
-	// if answer is correct
-		// show answer and add to the running total of points for the round
-		// if (indexOf(answer) === 0) {
-			// playOrPass?()
-		// } else {
-			// switch current player and show entry field, start 15 sec timer
-		// }
-	// else 
-		// set current player to the other, show entry field, start 15 sec timer
-
-// game variables
 var gameOptions = { };
 var playerOne = {
 	name: "",
@@ -59,7 +27,7 @@ var $mainMenu = $('#main_menu');
 var $gameOptionsForm = $('#game_options');
 var $namesForm = $('#names') ;
 var $answerEntry = $('#response_form');
-$answerEntry.append('<input type="text" id="user_guess" name="user_guess" class="user_guess text_box" autofocus><input type="submit">');
+$answerEntry.append('<input type="text" id="user_guess" name="user_guess" class="user_guess text_box" ><input type="submit">');
 var $userGuess = $('#user_guess');
 var $questionDiv = $('#question');
 var $timer = $('#countdown');
@@ -122,19 +90,6 @@ $answerEntry.submit(function(e){
 	checkForCorrectResponse(response);
 })
 
-// $('button').click(function(e){
-// 	// e.preventDefault();
-// 	if (e.target.textContent == "Pass") {
-// 		switchPlayer();
-// 	}
-// 	updateCurrentPlayer(currentPlayer);
-// 	$playOrPassForm.remove();
-// 	$questionDiv.show();
-// 	$board.show();
-// 	$answerEntry.show();
-// 	startTimer(15);
-// })
-
 var getPlayPass = function() {
 	if (this.textContent == "Pass") {
 		switchPlayer();
@@ -144,6 +99,7 @@ var getPlayPass = function() {
 	$questionDiv.show();
 	$board.show();
 	$answerEntry.show();
+	$userGuess.focus();
 	startTimer(15);
 }
 
@@ -260,6 +216,7 @@ var showIncorrectResponse = function() {
 		if (beginningOfRound === true) {
 			if (answers.length === answersLeft.length && loggedSubmissions < 4 ) {
 				$answerEntry.show();
+				$userGuess.focus();
 				promptOpponantGuess();
 			} else if (answers.length - 1 === answersLeft.length) {
 				switchPlayer();
@@ -272,6 +229,7 @@ var showIncorrectResponse = function() {
 			}
 		} else {
 			$answerEntry.show();
+			$userGuess.focus();
 			incorrectTracker();
 		}
 	}, 2000)
@@ -324,30 +282,22 @@ var checkForGameWinner = function() {
 		updateCurrentPlayer(playerTwo);
 	}
 	if (currentPlayer.score > 300) {
-		playFastMoney(currentPlayer);
+		playFastMoney();
 	} else {
-		endGame(currentPlayer);
+		endGame();
 	}
 }
 
-var playFastMoney = function(player) {
-	console.log("alright, " + player.name + "we're gonna play some fast money up in here");
-}
-
-var endGame = function(player) {
+var endGame = function() {
 	if (playerOne.score < 300 && playerTwo.score < 300) {
 		renderApologyEnding();
 	} else {
-		renderCongratulatoryEnding(player);
+		renderCongratulatoryEnding();
 	}
 }
 
 var renderApologyEnding = function() {
-	console.log("we're sorry but neither of you are worthy enough to play fast money. better luck next time.");
-}
-
-var renderCongratulatoryEnding = function(player) {
-	console.log("Congratulations " + player.name + "! way to win.");
+	alert("we're sorry but neither of you are worthy enough to play fast money. better luck next time.");
 }
 
 var playOrPass = function() {
@@ -372,6 +322,7 @@ var promptNameImputs = function(){
 		$namesForm.append('<input type="text" id="player_two_name" name="p2" placeholder="Your Friendly Name" class="text_box">');
 	}
 	$namesForm.append('<input type="submit">')
+	$('#player_one_name').focus();
 }
 
 
@@ -415,8 +366,11 @@ var initializeRound = function(round) {
 
 // event listener for keyboard events to buzz in
 var buzzIn = function(e) {
+	e.preventDefault();
 	if ( e.charCode === 122 || e.charCode === 47 ) {
 		$body.unbind("keypress", buzzIn);
+		$currentPlayerDiv.show();
+		$userGuess.focus();
 		clearTimeout(myTimer);
 		$timer.show();
 		startTimer(15);
@@ -427,7 +381,6 @@ var buzzIn = function(e) {
 	} else if ( e.charCode === 47 ) { // /
 		updateCurrentPlayer(playerTwo);
 	}
-	$currentPlayerDiv.show();
 }
 
 var updateCurrentPlayer = function(player) {
@@ -478,6 +431,7 @@ var startTimer = function(num) {
 		// setTimeout(function() {
 			$timer.show()
 			$answerEntry.show();
+			$userGuess.focus();
 		  var seconds = num;
 		  myTimer = setInterval(function () {
 		    $timer.text(":" + seconds);
@@ -493,7 +447,8 @@ var startTimer = function(num) {
 	} else {
 		$timer.hide();
 		setTimeout(function(){
-			$answerEntry.show();			
+			$answerEntry.show();
+			$userGuess.focus();			
 		}, 2000);
 	}
 }
