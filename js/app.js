@@ -241,6 +241,7 @@ var incorrectTracker = function() {
 	} else if (incorrectCounter === 3) {
 		playerRebuttal();
 	} else if (stealOpportunity === true) {
+		$answerEntry.hide();
 		switchPlayer();
 		currentPlayer.score += roundPoints;
 		updateCurrentPlayer(currentPlayer);
