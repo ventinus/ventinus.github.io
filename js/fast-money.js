@@ -35,7 +35,7 @@ $finalForm.submit(function(e){
 
 
 var playFastMoney = function() {
-	alert("alright, " + currentPlayer.name + "we're gonna play some fast money up in here");
+	alert("alright, " + currentPlayer.name + ", we're gonna play some fast money up in here");
 	$answerEntry.remove();
 	$playerTurn.hide();
 	$currentPlayerDiv.hide();
