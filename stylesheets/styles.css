@@ -186,6 +186,17 @@ input[type=checkbox]:after {
 	padding: 0;
 }
 
+form#names {
+  text-align: center;
+  margin-top: 65px;
+}
+
+#names input {
+  display: block;
+  margin: 40px auto;
+  padding: 10px;
+}
+
 ul {
   list-style: none;
   padding: 20px 0;

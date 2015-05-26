@@ -282,7 +282,7 @@ var checkForGameWinner = function() {
 	} else {
 		updateCurrentPlayer(playerTwo);
 	}
-	if (currentPlayer.score > 300) {
+	if (currentPlayer.score >= 300) {
 		playFastMoney();
 	} else {
 		endGame();
