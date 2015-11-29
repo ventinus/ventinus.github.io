@@ -1,0 +1,50 @@
+/*******************
+An example file of how to use the triangle mixins.
+It is a molecule because of the few elements working together
+to become something larger and reusable.
+*******************/
+
+.triangle-box {
+	position: relative;
+	width: 250px;
+	height: 100px;
+	margin: 20px auto;
+	text-align: center;
+	background-color: #000;
+	color: #FFF;
+
+	&:hover {
+		background-color: #555;
+	}
+}
+
+.triangle-box__text {
+	position: absolute;
+	width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.triangle-box__up {
+	top: 0;
+	left: 0;
+	@include triangle-up(5px, #FFF);
+}
+
+.triangle-box__right {
+	top: 0;
+	right: 0;
+	@include triangle-right(10px, #FFF);
+}
+
+.triangle-box__down {
+	bottom: 0;
+	right: 0;
+	@include triangle-down(15px, #FFF);
+}
+
+.triangle-box__left {
+	bottom: 0;
+	left: 0;
+	@include triangle-left(20px, #FFF);
+}

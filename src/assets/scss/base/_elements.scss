@@ -1,0 +1,54 @@
+/********************
+Base element CSS styles. Also described as atoms. Customize to the needs of the project.
+
+Includes elements such as anchors, buttons, etc.
+********************/
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000;
+  cursor: pointer;
+}
+
+a:visited {
+  color: #000;
+}
+
+button {}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  background-color: #FFF;
+  border: 1px solid #000;
+  appearance: none;
+  backface-visibility: hidden;
+}
+
+button:active,
+html input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"]:active {
+  color: #FFF;
+  background-color: #000;
+}
+
+button:focus {}
+
+button:hover {
+  cursor: pointer;
+}
+
+label {}
+
+input[type="text"]:focus {}
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
