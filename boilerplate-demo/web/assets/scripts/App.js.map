@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../src/assets/scripts/App.js"],"names":[],"mappings":";;;;;QAAqB,GAAG,GACT,SADM,GAAG,GACN;8BADG,GAAG;;AAEhB,eAAO,CAAC,GAAG,CAAC,+BAA+B,CAAC,CAAC;KAChD;;qBAHgB,GAAG","file":"App.js","sourcesContent":["export default class App {\n    constructor() {\n        console.log('Your JavaScript is hooked up!');\n    }\n}"]}
