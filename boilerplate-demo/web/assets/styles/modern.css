@@ -1,0 +1,457 @@
+.isVisuallyHidden {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  margin: 0 !important;
+  clip: rect(1px 1px 1px 1px) !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  overflow: hidden !important; }
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 70%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/********************
+Base element CSS styles. Also described as atoms. Customize to the needs of the project.
+
+Includes elements such as anchors, buttons, etc.
+********************/
+a {
+  color: #000;
+  text-decoration: none; }
+
+a:hover {
+  color: #000;
+  cursor: pointer; }
+
+a:visited {
+  color: #000; }
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  background-color: #FFF;
+  border: 1px solid #000;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden; }
+
+button:active,
+html input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"]:active {
+  color: #FFF;
+  background-color: #000; }
+
+button:hover {
+  cursor: pointer; }
+
+button[disabled],
+html input[disabled] {
+  cursor: default; }
+
+/********************
+Atoms
+********************/
+/******************
+Heading sizes. Modify to fit requirements.
+******************/
+.hdg--italic {
+  font-style: italic; }
+
+.hdg--bold {
+  font-weight: 700; }
+
+.hdg--1 {
+  font-size: 1.8em; }
+
+.hdg--2 {
+  font-size: 1.7em; }
+
+.hdg--3 {
+  font-size: 1.6em; }
+
+.hdg--4 {
+  font-size: 1.5em; }
+
+.hdg--5 {
+  font-size: 1.4em; }
+
+.hdg--6 {
+  font-size: 1.3em; }
+
+.hdg--7 {
+  font-size: 1.2em; }
+
+.hdg--8 {
+  font-size: 1.1em; }
+
+/******************
+Text sizes. Modify to fit requirements.
+******************/
+.txt--italic {
+  font-style: italic; }
+
+.txt--bold {
+  font-weight: 700; }
+
+.txt--1 {
+  font-size: 1.1em; }
+
+.txt--2 {
+  font-size: 1em; }
+
+.txt--3 {
+  font-size: 0.9em; }
+
+.txt--4 {
+  font-size: 0.8em; }
+
+/********************
+Molecules
+********************/
+/*******************
+An example file of how to use the triangle mixins.
+It is a molecule because of the few elements working together
+to become something larger and reusable.
+*******************/
+.triangle-box {
+  position: relative;
+  width: 250px;
+  height: 100px;
+  margin: 20px auto;
+  text-align: center;
+  background-color: #000;
+  color: #FFF; }
+  .triangle-box:hover {
+    background-color: #555; }
+
+.triangle-box__text {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%); }
+
+.triangle-box__up {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #FFF; }
+
+.triangle-box__right {
+  top: 0;
+  right: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #FFF; }
+
+.triangle-box__down {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid #FFF; }
+
+.triangle-box__left {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 20px solid #FFF; }
+
+.cols {
+  display: block;
+  font-size: 0; }
+
+.cols--1up-sm > .cols__col {
+  width: -webkit-calc(100%);
+  width: calc(100%); }
+
+.cols--1up-sm.cols--spaced > .cols__col {
+  width: -webkit-calc(100% - 0px);
+  width: calc(100% - 0px);
+  margin-top: 20px; }
+  .cols--1up-sm.cols--spaced > .cols__col + .cols__col {
+    margin-left: 20px; }
+  .cols--1up-sm.cols--spaced > .cols__col:nth-child(1n + 1) {
+    margin-left: 0; }
+
+.cols--2up-sm > .cols__col {
+  width: -webkit-calc(50%);
+  width: calc(50%); }
+
+.cols--2up-sm.cols--spaced > .cols__col {
+  width: -webkit-calc(50% - 10px);
+  width: calc(50% - 10px);
+  margin-top: 20px; }
+  .cols--2up-sm.cols--spaced > .cols__col + .cols__col {
+    margin-left: 20px; }
+  .cols--2up-sm.cols--spaced > .cols__col:nth-child(2n + 1) {
+    margin-left: 0; }
+
+.cols__col {
+  display: inline-block;
+  font-size: initial;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  vertical-align: top;
+  border: 1px solid #000; }
+
+/********************
+Organisms
+********************/
+@media screen and (min-width: 480px) {
+  /********************
+Atoms
+********************/
+  .hdg--1 {
+    font-size: 2em; }
+  .hdg--2 {
+    font-size: 1.9em; }
+  .hdg--3 {
+    font-size: 1.8em; }
+  .hdg--4 {
+    font-size: 1.7em; }
+  .hdg--5 {
+    font-size: 1.6em; }
+  .hdg--6 {
+    font-size: 1.5em; }
+  .hdg--7 {
+    font-size: 1.4em; }
+  .hdg--8 {
+    font-size: 1.3em; }
+  .txt--1 {
+    font-size: 1.3em; }
+  .txt--2 {
+    font-size: 1.2em; }
+  .txt--3 {
+    font-size: 1.1em; }
+  .txt--4 {
+    font-size: 1em; }
+  /********************
+Molecules
+********************/
+  .cols--2up-md > .cols__col {
+    width: -webkit-calc(50%);
+    width: calc(50%); }
+  .cols--2up-md.cols--spaced > .cols__col {
+    width: -webkit-calc(50% - 10px);
+    width: calc(50% - 10px); }
+    .cols--2up-md.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--2up-md.cols--spaced > .cols__col:nth-child(2n + 1) {
+      margin-left: 0; }
+  .cols--3up-md > .cols__col {
+    width: -webkit-calc(33.3333333333%);
+    width: calc(33.3333333333%); }
+  .cols--3up-md.cols--spaced > .cols__col {
+    width: -webkit-calc(33.33333% - 13.33333px);
+    width: calc(33.33333% - 13.33333px); }
+    .cols--3up-md.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--3up-md.cols--spaced > .cols__col:nth-child(3n + 1) {
+      margin-left: 0; }
+  .cols--4up-md > .cols__col {
+    width: -webkit-calc(25%);
+    width: calc(25%); }
+  .cols--4up-md.cols--spaced > .cols__col {
+    width: -webkit-calc(25% - 15px);
+    width: calc(25% - 15px); }
+    .cols--4up-md.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--4up-md.cols--spaced > .cols__col:nth-child(4n + 1) {
+      margin-left: 0; }
+  /********************
+Organisms
+********************/ }
+
+@media screen and (min-width: 768px) {
+  /********************
+Atoms
+********************/
+  .hdg--1 {
+    font-size: 2.3em; }
+  .hdg--2 {
+    font-size: 2.2em; }
+  .hdg--3 {
+    font-size: 2.1em; }
+  .hdg--4 {
+    font-size: 2em; }
+  .hdg--5 {
+    font-size: 1.9em; }
+  .hdg--6 {
+    font-size: 1.8em; }
+  .hdg--7 {
+    font-size: 1.7em; }
+  .hdg--8 {
+    font-size: 1.6em; }
+  .txt--1 {
+    font-size: 1.5em; }
+  .txt--2 {
+    font-size: 1.4em; }
+  .txt--3 {
+    font-size: 1.3em; }
+  .txt--4 {
+    font-size: 1.2em; }
+  /********************
+Molecules
+********************/
+  .cols--3up-lg > .cols__col {
+    width: -webkit-calc(33.3333333333%);
+    width: calc(33.3333333333%); }
+  .cols--3up-lg.cols--spaced > .cols__col {
+    width: -webkit-calc(33.33333% - 13.33333px);
+    width: calc(33.33333% - 13.33333px); }
+    .cols--3up-lg.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--3up-lg.cols--spaced > .cols__col:nth-child(3n + 1) {
+      margin-left: 0; }
+  .cols--4up-lg > .cols__col {
+    width: -webkit-calc(25%);
+    width: calc(25%); }
+  .cols--4up-lg.cols--spaced > .cols__col {
+    width: -webkit-calc(25% - 15px);
+    width: calc(25% - 15px); }
+    .cols--4up-lg.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--4up-lg.cols--spaced > .cols__col:nth-child(4n + 1) {
+      margin-left: 0; }
+  .cols--5up-lg > .cols__col {
+    width: -webkit-calc(20%);
+    width: calc(20%); }
+  .cols--5up-lg.cols--spaced > .cols__col {
+    width: -webkit-calc(20% - 16px);
+    width: calc(20% - 16px); }
+    .cols--5up-lg.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--5up-lg.cols--spaced > .cols__col:nth-child(5n + 1) {
+      margin-left: 0; }
+  /********************
+Organisms
+********************/ }
+
+@media screen and (min-width: 1000px) {
+  /********************
+Atoms
+********************/
+  .hdg--1 {
+    font-size: 2.5em; }
+  .hdg--2 {
+    font-size: 2.4em; }
+  .hdg--3 {
+    font-size: 2.3em; }
+  .hdg--4 {
+    font-size: 2.2em; }
+  .hdg--5 {
+    font-size: 2.1em; }
+  .hdg--6 {
+    font-size: 2em; }
+  .hdg--7 {
+    font-size: 1.9em; }
+  .hdg--8 {
+    font-size: 1.8em; }
+  .txt--1 {
+    font-size: 1.7em; }
+  .txt--2 {
+    font-size: 1.6em; }
+  .txt--3 {
+    font-size: 1.5em; }
+  .txt--4 {
+    font-size: 1.4em; }
+  /********************
+Molecules
+********************/
+  .cols--4up-xlg > .cols__col {
+    width: -webkit-calc(25%);
+    width: calc(25%); }
+  .cols--4up-xlg.cols--spaced > .cols__col {
+    width: -webkit-calc(25% - 15px);
+    width: calc(25% - 15px); }
+    .cols--4up-xlg.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--4up-xlg.cols--spaced > .cols__col:nth-child(4n + 1) {
+      margin-left: 0; }
+  .cols--5up-xlg > .cols__col {
+    width: -webkit-calc(20%);
+    width: calc(20%); }
+  .cols--5up-xlg.cols--spaced > .cols__col {
+    width: -webkit-calc(20% - 16px);
+    width: calc(20% - 16px); }
+    .cols--5up-xlg.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--5up-xlg.cols--spaced > .cols__col:nth-child(5n + 1) {
+      margin-left: 0; }
+  .cols--6up-xlg > .cols__col {
+    width: -webkit-calc(16.6666666667%);
+    width: calc(16.6666666667%); }
+  .cols--6up-xlg.cols--spaced > .cols__col {
+    width: -webkit-calc(16.66667% - 16.66667px);
+    width: calc(16.66667% - 16.66667px); }
+    .cols--6up-xlg.cols--spaced > .cols__col + .cols__col {
+      margin-left: 20px; }
+    .cols--6up-xlg.cols--spaced > .cols__col:nth-child(6n + 1) {
+      margin-left: 0; }
+  /********************
+Organisms
+********************/ }

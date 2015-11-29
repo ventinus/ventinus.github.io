@@ -1,0 +1,25 @@
+$col_spacing: #{$col_spacing-val}px;
+
+// NOTE: can change and/or expand restrictions if necessary
+@for $i from 2 through 4 {
+	$col-perc: 100% / $i;
+	$col-spacers: $i - 1;
+	$total-spacing: $col-spacers * $col_spacing-val;
+	$spaced-col-perc: $col-perc - #{$total-spacing / $i}px;
+
+	.cols--#{$i}up-md > .cols__col {
+		width: calc(#{$col-perc});
+	}
+	
+	.cols--#{$i}up-md.cols--spaced > .cols__col {
+		width: calc(#{$spaced-col-perc});
+
+		+ .cols__col {
+			margin-left: #{$col_spacing};
+		}
+		
+		&:nth-child(#{$i}n + 1) {
+			margin-left: 0;
+		}
+	}
+}
