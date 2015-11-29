@@ -1,0 +1,2 @@
+define("App",["exports","module"],function(n,o){"use strict";function e(n,o){if(!(n instanceof o))throw new TypeError("Cannot call a class as a function")}var t=function i(){e(this,i);console.log("Your JavaScript is hooked up!")};o.exports=t});define("main",["exports","./App"],function(n,o){"use strict";function e(n){return n&&n.__esModule?n:{"default":n}}var t=e(o);window.app=new t["default"]});
+//# sourceMappingURL=main.js.map
