@@ -1,0 +1,40 @@
+$col_spacing: #{$col_spacing-val}px;
+
+.cols {
+	display: block;
+	font-size: 0
+}
+
+// NOTE: can change and/or expand restrictions if necessary
+@for $i from 1 through 2 {
+	$col-perc: 100% / $i;
+	$col-spacers: $i - 1;
+	$total-spacing: $col-spacers * $col_spacing-val;
+	$spaced-col-perc: $col-perc - #{$total-spacing / $i}px;
+
+	.cols--#{$i}up-sm > .cols__col {
+		width: calc(#{$col-perc});
+	}
+	
+	// Calculates widths with $col_spacing-val for spaced columns
+	.cols--#{$i}up-sm.cols--spaced > .cols__col {
+		width: calc(#{$spaced-col-perc});
+		margin-top: #{$col_spacing};
+
+		+ .cols__col {
+			margin-left: #{$col_spacing};
+		}
+		
+		&:nth-child(#{$i}n + 1) {
+			margin-left: 0;
+		}
+	}
+}
+
+.cols__col {
+	display: inline-block;
+	font-size: initial;
+	box-sizing: border-box;
+	vertical-align: top; // NOTE: optional default
+	border: 1px solid #000; // TODO: delete this line
+}

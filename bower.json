@@ -1,0 +1,10 @@
+{
+  "name": "assemble",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "requirejs": "2.1.16",
+    "modernizr": "components/modernizr#2.8.3"
+  },
+  "devDependencies": {}
+}
