@@ -30,7 +30,7 @@ define(['exports', 'module'], function (exports, module) {
         dotsContainer: '.slipnslider',
         slideElement: 'div',
         stageElement: 'div',
-        slidePadding: 20
+        slidePadding: 10
       };
 
       /**
@@ -55,7 +55,7 @@ define(['exports', 'module'], function (exports, module) {
        * Calculation of the width of each slide in percent
        * @type {Number}
        */
-      this.percent = 0;
+      this.slideWidth = this.slider.offsetWidth;
 
       /**
        * Index number of the current active slide
@@ -203,9 +203,7 @@ define(['exports', 'module'], function (exports, module) {
         this.stage.appendChild(firstSlide);
         this.stage.insertBefore(lastSlide, this.slides[0]);
         this.slides = this.stage.children;
-        this.addSlidePadding();
         this.total = this.slides.length;
-        this.percent = 100 / this.total;
         this.activeSlideIndex = 1;
 
         return this;
@@ -238,31 +236,20 @@ define(['exports', 'module'], function (exports, module) {
         this.stage.className = "slipnslider__stage";
         this.slides = this.slider.children;
         this.total = this.slides.length;
-        this.percent = 100 / this.total;
+        this.slideWidth = this.slider.offsetWidth;
         for (var i = 0; i < this.total; i++) {
           var slide = document.createElement(this.slideElement);
           for (var j = 0, h = this.slides[0].children.length; j < h; j++) {
             slide.appendChild(this.slides[0].children[0]);
           }
           this.slides[0].remove();
-          slide.style.width = this.percent + '%';
+          slide.style.width = this.slideWidth + '%';
           this.stage.appendChild(slide);
         }
         this.slides = this.stage.children;
-        this.addSlidePadding();
         this.slider.appendChild(this.stage);
         this.stage = this.slider.children[0];
 
-        return this;
-      }
-    }, {
-      key: 'addSlidePadding',
-      value: function addSlidePadding() {
-        var _this = this;
-
-        Array.prototype.forEach.call(this.slides, (function (slide) {
-          slide.style.marginLeft = _this.slidePadding + 'px';
-        }).bind(this));
         return this;
       }
 
@@ -455,15 +442,16 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'defineSizes',
       value: function defineSizes() {
-        var _this2 = this;
+        var _this = this;
 
         var totalPadding = (this.total - 1) * this.slidePadding;
         this.stage.style.width = this.slider.offsetWidth * this.total + totalPadding + 'px';
         this.dragThreshold = this.slider.offsetWidth / 4;
         var additionalWidth = (this.total - 1) * this.slidePadding / this.total;
-        Array.prototype.forEach.call(this.slides, function (slide) {
-          slide.style.width = _this2.slider.offsetWidth + 'px';
-        });
+        Array.prototype.forEach.call(this.slides, (function (slide) {
+          slide.style.width = _this.slider.offsetWidth + 'px';
+          slide.style.marginLeft = _this.slidePadding + 'px';
+        }).bind(this));
         return this;
       }
 
@@ -751,10 +739,10 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'addStageTransition',
       value: function addStageTransition() {
-        var _this3 = this;
+        var _this2 = this;
 
         setTimeout((function () {
-          _this3.stage.style[_this3.transitionPrefix] = "all .75s";
+          _this2.stage.style[_this2.transitionPrefix] = "all .75s";
         }).bind(this), 1);
         return this;
       }
