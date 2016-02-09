@@ -1,5 +1,5 @@
 define(['exports', 'module'], function (exports, module) {
-  // TODO: reset position when drag isnt enough to trigger slide change
+  // TODO: setup form fields for customizing the slider
 
   'use strict';
 
@@ -45,12 +45,6 @@ define(['exports', 'module'], function (exports, module) {
        * @type {String}
        */
       this.slider = element;
-
-      /**
-       * Cache selector for main slider element
-       * @type {DOM element}
-       */
-      // this.slider = document.querySelector(instanceClass);
 
       /**
        * The amount of slides in slider
@@ -247,7 +241,7 @@ define(['exports', 'module'], function (exports, module) {
         this.percent = 100 / this.total;
         for (var i = 0; i < this.total; i++) {
           var slide = document.createElement(this.slideElement);
-          for (var j = 0; j < this.slides[0].children.length; j++) {
+          for (var j = 0, h = this.slides[0].children.length; j < h; j++) {
             slide.appendChild(this.slides[0].children[0]);
           }
           this.slides[0].remove();
@@ -597,8 +591,10 @@ define(['exports', 'module'], function (exports, module) {
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = "all .75s";
         var travelled = this.startpoint - e.pageX;
-        if (Math.abs(travelled) >= 30) {
+        if (Math.abs(travelled) >= this.dragThreshold) {
           travelled < 0 ? this.moveToAdjacentSlide(false) : this.moveToAdjacentSlide(true);
+        } else {
+          this.navigateToSlide();
         }
 
         return this;
@@ -780,6 +776,12 @@ define(['exports', 'module'], function (exports, module) {
           }
         }
       }
+
+      /**
+       * Retrieves the correct transition prefix with what
+       * exists in the users browser
+       * @return {String} Transition Prefix
+       */
     }, {
       key: 'transitionPrefix',
       value: function transitionPrefix() {
@@ -798,6 +800,12 @@ define(['exports', 'module'], function (exports, module) {
           }
         }
       }
+
+      /**
+       * Retrieves the correct transform prefix
+       * with what exists in the users browser
+       * @return {String} Transform Prefix
+       */
     }, {
       key: 'transformPrefix',
       value: function transformPrefix() {

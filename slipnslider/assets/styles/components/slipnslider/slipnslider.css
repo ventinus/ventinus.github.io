@@ -3,40 +3,61 @@
   max-width: 600px;
   margin: 0 auto; }
 
+.slipnslider {
+  padding-bottom: 40px; }
+
+.slipnslider img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 100%; }
+
 /***********************************
 
-	SlipnSlider vendor styles
+  SlipnSlider vendor styles
 
 ***********************************/
 .slipnslider {
   font-size: 0;
   overflow: hidden;
   width: 100%;
-  position: relative;
-  padding-bottom: 40px; }
+  position: relative; }
 
 .slipnslider__stage {
   position: relative;
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden; }
+  -webkit-backface-visibility: hidden;
+  cursor: -webkit-grab;
+  cursor: -o-grab;
+  cursor: -ms-grab;
+  cursor: grab; }
 
 .slipnslider__stage > * {
   display: inline-block;
   height: auto;
   margin: 0;
   padding: 0;
-  -webkit-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -webkit-backface-visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
   -moz-user-select: none;
-  -webkit-user-drag: none;
   -webkit-user-select: none;
-  -ms-user-select: none; }
+  -ms-user-select: none;
+  -webkit-user-drag: none; }
 
-.slipnslider img {
-  display: block;
-  height: auto;
-  max-width: 100%; }
+.slipnslider__controls .slipnslider__prev,
+.slipnslider__controls .slipnslider__next,
+.slipnslider__dot-nav > * {
+  cursor: pointer;
+  cursor: hand;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 .slipnslider__controls {
   display: inline-block;
@@ -45,7 +66,7 @@
   left: 0; }
 
 .slipnslider__dot-nav {
-  display: inline-block;
+  display: block;
   position: absolute;
   left: 0;
   padding: 0;
@@ -59,8 +80,17 @@
   height: 12px;
   margin: 2px;
   width: 12px;
-  -webkit-border-radius: 50%;
-          border-radius: 50%; }
+  vertical-align: middle;
+  border-radius: 50%;
+  -webkit-border-radius: 50%; }
 
 .slipnslider__dot-nav li.slipnslider__active {
-  background: #000; }
+  background: #000;
+  width: 14px;
+  height: 14px; }
+
+.no-js .slipnslider__stage,
+.no-js .slipnslider__stage > * {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block; }
