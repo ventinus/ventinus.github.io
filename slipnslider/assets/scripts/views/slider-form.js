@@ -30,6 +30,7 @@ define(['exports', 'module', '../components/SlipnSlider'], function (exports, mo
 				this.isInfinite = this.element.querySelector(".js-isInfinite");
 				this.hasDotNav = this.element.querySelector(".js-hasDotNav");
 				this.hasControls = this.element.querySelector(".js-hasControls");
+				this.slidePadding = this.element.querySelector(".js-slidePadding");
 				this.slipnsliderEl = window.app.slipnsliderEl || document.querySelector('.slipnslider');
 				this.slipnslider = window.app.slipnSlider || new _SlipnSlider['default'](this.slipnsliderEl);
 				return this;
@@ -56,7 +57,8 @@ define(['exports', 'module', '../components/SlipnSlider'], function (exports, mo
 				var options = {
 					isInfinite: eval(this.isInfinite.selectedOptions[0].value),
 					hasDotNav: eval(this.hasDotNav.selectedOptions[0].value),
-					hasControls: eval(this.hasControls.selectedOptions[0].value)
+					hasControls: eval(this.hasControls.selectedOptions[0].value),
+					slidePadding: parseInt(this.slidePadding.value)
 				};
 
 				this.slipnslider = new _SlipnSlider['default'](this.slipnsliderEl, options);

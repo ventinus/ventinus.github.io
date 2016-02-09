@@ -4,7 +4,8 @@ body {
 .slider-wrapper {
   width: 80%;
   max-width: 600px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  border: 1px solid #aaa; }
 
 .slipnslider {
   padding-bottom: 40px; }
@@ -39,7 +40,6 @@ body {
   display: inline-block;
   height: auto;
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -webkit-backface-visibility: hidden;
@@ -49,6 +49,9 @@ body {
   -webkit-user-select: none;
   -ms-user-select: none;
   -webkit-user-drag: none; }
+
+.slipnslider__stage > *:first-child {
+  margin-left: 0 !important; }
 
 .slipnslider__controls .slipnslider__prev,
 .slipnslider__controls .slipnslider__next,

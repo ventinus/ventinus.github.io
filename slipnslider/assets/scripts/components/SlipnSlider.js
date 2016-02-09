@@ -29,7 +29,8 @@ define(['exports', 'module'], function (exports, module) {
         navContainer: '.slipnslider',
         dotsContainer: '.slipnslider',
         slideElement: 'div',
-        stageElement: 'div'
+        stageElement: 'div',
+        slidePadding: 20
       };
 
       /**
@@ -202,6 +203,7 @@ define(['exports', 'module'], function (exports, module) {
         this.stage.appendChild(firstSlide);
         this.stage.insertBefore(lastSlide, this.slides[0]);
         this.slides = this.stage.children;
+        this.addSlidePadding();
         this.total = this.slides.length;
         this.percent = 100 / this.total;
         this.activeSlideIndex = 1;
@@ -247,9 +249,20 @@ define(['exports', 'module'], function (exports, module) {
           this.stage.appendChild(slide);
         }
         this.slides = this.stage.children;
+        this.addSlidePadding();
         this.slider.appendChild(this.stage);
         this.stage = this.slider.children[0];
 
+        return this;
+      }
+    }, {
+      key: 'addSlidePadding',
+      value: function addSlidePadding() {
+        var _this = this;
+
+        Array.prototype.forEach.call(this.slides, (function (slide) {
+          slide.style.marginLeft = _this.slidePadding + 'px';
+        }).bind(this));
         return this;
       }
 
@@ -442,12 +455,14 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'defineSizes',
       value: function defineSizes() {
-        var _this = this;
+        var _this2 = this;
 
-        this.stage.style.width = this.slider.offsetWidth * this.total + 'px';
+        var totalPadding = (this.total - 1) * this.slidePadding;
+        this.stage.style.width = this.slider.offsetWidth * this.total + totalPadding + 'px';
         this.dragThreshold = this.slider.offsetWidth / 4;
+        var additionalWidth = (this.total - 1) * this.slidePadding / this.total;
         Array.prototype.forEach.call(this.slides, function (slide) {
-          slide.style.width = _this.percent + '%';
+          slide.style.width = _this2.slider.offsetWidth + 'px';
         });
         return this;
       }
@@ -569,17 +584,18 @@ define(['exports', 'module'], function (exports, module) {
           window.scrollTo(document.body.scrollLeft, document.body.scrollTop + (this.curYPos - e.pageY));
         }
 
-        var currentPos = this.activeSlideIndex * -this.percent;
-        var movePos = currentPos + (this.startpoint - e.pageX) * 0.03 * -1;
+        var currentPos = (this.activeSlideIndex * this.slider.offsetWidth + this.slidePadding * this.activeSlideIndex) * -1;
+        var movePos = currentPos - (this.startpoint - e.pageX) * 0.7;
+
         if (!this.isInfinite) {
           if (movePos >= 0) {
             movePos = 0;
-          } else if (movePos <= (100 - 100 / this.total) * -1) {
-            movePos = (100 - 100 / this.total) * -1;
+          } else if (movePos <= -this.stage.offsetWidth + this.slider.offsetWidth) {
+            movePos = -this.stage.offsetWidth + this.slider.offsetWidth;
           }
         }
 
-        this.stage.style[this.transformPrefix] = 'translate3d(' + movePos + '%, 0, 0)';
+        this.stage.style[this.transformPrefix] = 'translate3d(' + movePos + 'px, 0, 0)';
 
         return this;
       }
@@ -670,7 +686,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'navigateToSlide',
       value: function navigateToSlide() {
-        var moveTo = this.activeSlideIndex * this.percent + '%';
+        var moveTo = this.activeSlideIndex * this.slider.offsetWidth + this.slidePadding * this.activeSlideIndex + 'px';
         this.stage.style[this.transformPrefix] = 'translate3d(-' + moveTo + ',0,0)';
         if (this.hasDotNav) {
           this.activeDot.className = "";
@@ -735,10 +751,10 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'addStageTransition',
       value: function addStageTransition() {
-        var _this2 = this;
+        var _this3 = this;
 
         setTimeout((function () {
-          _this2.stage.style[_this2.transitionPrefix] = "all .75s";
+          _this3.stage.style[_this3.transitionPrefix] = "all .75s";
         }).bind(this), 1);
         return this;
       }
