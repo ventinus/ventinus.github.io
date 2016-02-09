@@ -1,4 +1,7 @@
 define(['exports', 'module'], function (exports, module) {
+  // Features to add:
+  //  autoplay
+
   'use strict';
 
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -576,10 +579,12 @@ define(['exports', 'module'], function (exports, module) {
         var movePos = currentPos - (this.startpoint - e.pageX) * 0.7;
 
         if (!this.isInfinite) {
-          if (movePos >= 0) {
-            movePos = 0;
-          } else if (movePos <= -this.stage.offsetWidth + this.slider.offsetWidth) {
-            movePos = -this.stage.offsetWidth + this.slider.offsetWidth;
+          // Dividing by 4 and multiplying by 0.75 allows a
+          // peek over either end by a quarter of slide width
+          if (movePos >= this.slider.offsetWidth / 4) {
+            movePos = this.slider.offsetWidth / 4;
+          } else if (movePos <= -this.stage.offsetWidth + this.slider.offsetWidth * 0.75) {
+            movePos = -this.stage.offsetWidth + this.slider.offsetWidth * 0.75;
           }
         }
 
@@ -606,7 +611,13 @@ define(['exports', 'module'], function (exports, module) {
         this.stage.style[this.transitionPrefix] = "all .75s";
         var travelled = this.startpoint - e.pageX;
         if (Math.abs(travelled) >= this.dragThreshold) {
-          travelled < 0 ? this.moveToAdjacentSlide(false) : this.moveToAdjacentSlide(true);
+          if (travelled < 0 && !this.atFirstSlide()) {
+            this.moveToAdjacentSlide(false);
+          } else if (travelled > 0 && !this.atLastSlide()) {
+            this.moveToAdjacentSlide(true);
+          } else {
+            this.navigateToSlide();
+          }
         } else {
           this.navigateToSlide();
         }
