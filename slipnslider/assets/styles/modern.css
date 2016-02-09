@@ -1,0 +1,69 @@
+body {
+  line-height: 1.6; }
+
+.slider-wrapper {
+  width: 80%;
+  max-width: 600px;
+  margin: 0 auto; }
+
+/***********************************
+
+	SlipnSlider vendor styles
+
+***********************************/
+.slipnslider {
+  font-size: 0;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  padding-bottom: 40px; }
+
+.slipnslider__stage {
+  position: relative;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; }
+
+.slipnslider__stage > * {
+  display: inline-block;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none; }
+
+.slipnslider img {
+  display: block;
+  height: auto;
+  max-width: 100%; }
+
+.slipnslider__controls {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 0; }
+
+.slipnslider__dot-nav {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  padding: 0;
+  width: 100%;
+  bottom: 15px;
+  text-align: center; }
+
+.slipnslider__dot-nav li {
+  background: #CCC;
+  display: inline-block;
+  height: 12px;
+  margin: 2px;
+  width: 12px;
+  -webkit-border-radius: 50%;
+          border-radius: 50%; }
+
+.slipnslider__dot-nav li.slipnslider__active {
+  background: #000; }
