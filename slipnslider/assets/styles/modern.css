@@ -97,3 +97,29 @@ body {
   width: 100% !important;
   max-width: 100% !important;
   display: block; }
+
+.slider-form {
+  width: 50%;
+  margin: 30px auto 0;
+  border: 2px solid #a82bde;
+  padding: 30px;
+  -webkit-border-radius: 40px;
+          border-radius: 40px; }
+
+.slider-form select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  padding: 5px; }
+
+.slider-form input[type="submit"] {
+  width: auto;
+  margin-left: auto;
+  margin-right: auto; }
+
+.slider-form > * {
+  display: block;
+  width: 100%; }
+
+.slider-form > * + * {
+  margin-top: 15px; }

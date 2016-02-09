@@ -1,6 +1,4 @@
 define(['exports', 'module'], function (exports, module) {
-  // TODO: setup form fields for customizing the slider
-
   'use strict';
 
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -27,7 +25,7 @@ define(['exports', 'module'], function (exports, module) {
       this.optionableProperties = {
         isInfinite: false,
         hasDotNav: true,
-        slidePadding: 0,
+        hasControls: true,
         navContainer: '.slipnslider',
         dotsContainer: '.slipnslider',
         slideElement: 'div',
@@ -263,7 +261,7 @@ define(['exports', 'module'], function (exports, module) {
        */
     }, {
       key: 'createDots',
-      value: function createDots(element) {
+      value: function createDots() {
         if (!this.hasDotNav || this.total === 1) {
           return this;
         }
@@ -288,12 +286,14 @@ define(['exports', 'module'], function (exports, module) {
        * wrapping element and appends the prev and next
        * buttons as children and caches them as properties
        * of the slider.
-       * @param  {String} element CSS Selector for desired element to append controls
        * @return {SlipnSlider}
        */
     }, {
       key: 'createControls',
-      value: function createControls(element) {
+      value: function createControls() {
+        if (!this.hasControls || this.total === 1) {
+          return this;
+        }
         var targetElement = document.querySelector(this.navContainer);
         var controlsWrapper = document.createElement("div");
         controlsWrapper.className = "slipnslider__controls";
@@ -342,13 +342,17 @@ define(['exports', 'module'], function (exports, module) {
 
         this.isEnabled = true;
 
-        this.nextBtn.addEventListener("click", this.onNextClickHandler);
-        this.prevBtn.addEventListener("click", this.onPrevClickHandler);
+        if (this.hasControls) {
+          this.nextBtn.addEventListener("click", this.onNextClickHandler);
+          this.prevBtn.addEventListener("click", this.onPrevClickHandler);
+        }
+
         if (this.hasDotNav) {
           for (var i = 0, j = this.navDots.length; i < j; i++) {
             this.navDots[i].addEventListener("click", this.onDotClickHandler);
           }
         }
+
         this.stage.addEventListener(this.pressStart, this.onDragStartHandler);
         window.addEventListener(this.pressMove, this.onDragHandler);
         window.addEventListener(this.pressEnd, this.offDragHandler);
@@ -374,8 +378,11 @@ define(['exports', 'module'], function (exports, module) {
 
         this.isEnabled = false;
 
-        this.nextBtn.removeEventListener("click", this.onNextClickHandler);
-        this.prevBtn.removeEventListener("click", this.onPrevClickHandler);
+        if (this.hasControls) {
+          this.nextBtn.removeEventListener("click", this.onNextClickHandler);
+          this.prevBtn.removeEventListener("click", this.onPrevClickHandler);
+        }
+
         if (this.hasDotNav) {
           for (var i = 0, j = this.navDots.length; i < j; i++) {
             this.navDots[i].removeEventListener("click", this.onDotClickHandler);
@@ -398,7 +405,10 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'removeCreatedElements',
       value: function removeCreatedElements() {
-        this.prevBtn.parentElement.remove();
+        if (this.hasControls) {
+          this.prevBtn.parentElement.remove();
+        }
+
         if (this.hasDotNav) {
           this.dotNav.remove();
         }
