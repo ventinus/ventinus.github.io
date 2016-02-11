@@ -329,6 +329,7 @@ define(['exports', 'module'], function (exports, module) {
         this.onDragStartHandler = this.onDragStart.bind(this);
         this.onDragHandler = this.onDrag.bind(this);
         this.offDragHandler = this.offDrag.bind(this);
+        this.keydownHandler = this.onKeyDown.bind(this);
         return this;
       }
 
@@ -363,6 +364,11 @@ define(['exports', 'module'], function (exports, module) {
           this.defineSizes();
         }).bind(this);
 
+        // check for not mobile to attach keystroke eventhandler
+        if (this.pressStart === 'mousedown') {
+          window.addEventListener('keydown', this.keydownHandler);
+        }
+
         return this;
       }
 
@@ -392,8 +398,12 @@ define(['exports', 'module'], function (exports, module) {
           }
         }
         this.stage.removeEventListener(this.pressStart, this.onDragStartHandler);
-        this.stage.removeEventListener(this.pressMove, this.onDragHandler);
+        window.removeEventListener(this.pressMove, this.onDragHandler);
         window.removeEventListener(this.pressEnd, this.offDragHandler);
+
+        if (this.pressStart === 'mousedown') {
+          window.removeEventListener('keydown', this.keydownHandler);
+        }
 
         this.removeCreatedElements();
 
@@ -488,6 +498,17 @@ define(['exports', 'module'], function (exports, module) {
         this.navigateToSlide();
         return this;
       }
+    }, {
+      key: 'onKeyDown',
+      value: function onKeyDown(e) {
+        if (event.keyCode === 37) {
+          this.moveToAdjacentSlide(false);
+        } else if (e.keyCode === 39) {
+          this.moveToAdjacentSlide(true);
+        }
+
+        return this;
+      }
 
       /**
        * Finds the slide to navigate to corresponding to the
@@ -540,7 +561,6 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDragStart',
       value: function onDragStart(e) {
-        e.preventDefault();
         if (this.isTransitioning) {
           return this;
         }
@@ -566,7 +586,6 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDrag',
       value: function onDrag(e) {
-        e.preventDefault();
         if (this.isTransitioning || !this.isDragging) {
           return this;
         }
@@ -603,7 +622,6 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'offDrag',
       value: function offDrag(e) {
-        e.preventDefault();
         if (!this.isDragging) {
           return this;
         }
