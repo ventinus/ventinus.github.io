@@ -564,6 +564,11 @@ define(['exports', 'module'], function (exports, module) {
         if (this.isTransitioning) {
           return this;
         }
+
+        if (navigator.userAgent.match(/Android/i)) {
+          e.preventDefault();
+        }
+
         this.removeStageTransition();
         this.startpoint = e.pageX;
         this.isDragging = true;
