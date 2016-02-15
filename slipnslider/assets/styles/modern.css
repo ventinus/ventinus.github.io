@@ -22,12 +22,12 @@ body {
 
 ***********************************/
 .slipnslider {
-  font-size: 0;
   overflow: hidden;
   width: 100%;
   position: relative; }
 
 .slipnslider__stage {
+  font-size: 0;
   position: relative;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -38,6 +38,7 @@ body {
 
 .slipnslider__stage > * {
   display: inline-block;
+  font-size: initial;
   height: auto;
   margin: 0;
   vertical-align: middle;
@@ -78,7 +79,7 @@ body {
   left: 0;
   padding: 0;
   width: 100%;
-  bottom: 15px;
+  bottom: 0;
   text-align: center; }
 
 .slipnslider__dot-nav li {

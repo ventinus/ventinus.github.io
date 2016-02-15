@@ -31,6 +31,7 @@ define(['exports', 'module', '../components/SlipnSlider'], function (exports, mo
 				this.hasDotNav = this.element.querySelector(".js-hasDotNav");
 				this.hasControls = this.element.querySelector(".js-hasControls");
 				this.slidePadding = this.element.querySelector(".js-slidePadding");
+				this.slidesPerPage = this.element.querySelector(".js-slidesPerPage");
 				this.slipnsliderEl = window.app.slipnsliderEl || document.querySelector('.slipnslider');
 				this.slipnslider = window.app.slipnSlider || new _SlipnSlider['default'](this.slipnsliderEl);
 				return this;
@@ -58,7 +59,8 @@ define(['exports', 'module', '../components/SlipnSlider'], function (exports, mo
 					isInfinite: eval(this.isInfinite.selectedOptions[0].value),
 					hasDotNav: eval(this.hasDotNav.selectedOptions[0].value),
 					hasControls: eval(this.hasControls.selectedOptions[0].value),
-					slidePadding: parseInt(this.slidePadding.value)
+					slidePadding: parseInt(this.slidePadding.value),
+					slidesPerPage: parseInt(this.slidesPerPage.value)
 				};
 
 				this.slipnslider = new _SlipnSlider['default'](this.slipnsliderEl, options);

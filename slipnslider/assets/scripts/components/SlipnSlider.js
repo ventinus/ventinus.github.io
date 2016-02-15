@@ -1,7 +1,9 @@
 define(['exports', 'module'], function (exports, module) {
   // Features to add:
-  //  autoplay
+  //  autoplay, slides to show at a time, paging/how they transition (flowing behind
+  //  instead of strictly left and right)
 
+  // (even if there arent any dots, still have that tracking going on)
   'use strict';
 
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -26,14 +28,15 @@ define(['exports', 'module'], function (exports, module) {
        * @type {Object}
        */
       this.optionableProperties = {
-        isInfinite: false,
+        isInfinite: true,
         hasDotNav: true,
         hasControls: true,
         navContainer: '.slipnslider',
         dotsContainer: '.slipnslider',
         slideElement: 'div',
         stageElement: 'div',
-        slidePadding: 10
+        slidePadding: 10,
+        slidesPerPage: 2
       };
 
       /**
@@ -58,7 +61,10 @@ define(['exports', 'module'], function (exports, module) {
        * Calculation of the width of each slide in percent
        * @type {Number}
        */
-      this.slideWidth = this.slider.offsetWidth;
+      this.slideWidth = 0;
+      this.dotsCount = 0;
+      this.upperBounds = 0;
+      this.slideBy = 0;
 
       /**
        * Index number of the current active slide
@@ -183,6 +189,7 @@ define(['exports', 'module'], function (exports, module) {
             this[option] = this.optionableProperties[option];
           }
         }
+
         return this;
       }
 
@@ -197,32 +204,37 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'setupInfiniteSlider',
       value: function setupInfiniteSlider() {
-        if (!this.isInfinite || this.total === 1) {
+        if (!this.isInfinite || this.total === 1 || this.total <= this.slidesPerPage) {
+          this.isInfinite = false;
           return this;
         }
 
-        var firstSlide = this.slides[0].cloneNode(true);
-        var lastSlide = this.slides[this.total - 1].cloneNode(true);
-        this.stage.appendChild(firstSlide);
-        this.stage.insertBefore(lastSlide, this.slides[0]);
-        this.slides = this.stage.children;
-        this.total = this.slides.length;
-        this.activeSlideIndex = 1;
-
-        return this;
-      }
-
-      /**
-       * Adds data attributes to the slides of an index
-       * number that corresponds with a dot.
-       * @return {SlipnSlider}
-       */
-    }, {
-      key: 'setDataAttrs',
-      value: function setDataAttrs() {
-        for (var i = 0; i < this.total; i++) {
-          this.slides[i].dataset.jsSlideIndex = i;
+        var times = this.slidesPerPage + 1;
+        for (var i = 0; i < times; i++) {
+          var slide = this.slides[i].cloneNode(true);
+          this.stage.appendChild(slide);
         }
+
+        var lastSlideIndex = this.total - 1;
+        for (var i = lastSlideIndex; i > lastSlideIndex - times; i--) {
+          var slide = this.slides[lastSlideIndex].cloneNode(true);
+          this.stage.insertBefore(slide, this.slides[0]);
+        }
+
+        this.total = this.slides.length;
+        this.activeSlideIndex = this.slidesPerPage + 1;
+
+        // need additional dots for more than 1 slide per page
+        if (this.slidesPerPage > 1) {
+          for (var i = 0, j = this.slidesPerPage - 1; i < j; i++) {
+            this.dotNav.appendChild(document.createElement("li"));
+            this.dotsCount++;
+          }
+        }
+        // Recache the dots
+        this.navDots = this.dotNav.children;
+        this.dotsCount = this.navDots.length;
+
         return this;
       }
 
@@ -239,19 +251,36 @@ define(['exports', 'module'], function (exports, module) {
         this.stage.className = "slipnslider__stage";
         this.slides = this.slider.children;
         this.total = this.slides.length;
-        this.slideWidth = this.slider.offsetWidth;
+
         for (var i = 0; i < this.total; i++) {
           var slide = document.createElement(this.slideElement);
           for (var j = 0, h = this.slides[0].children.length; j < h; j++) {
             slide.appendChild(this.slides[0].children[0]);
           }
           this.slides[0].remove();
-          slide.style.width = this.slideWidth + '%';
           this.stage.appendChild(slide);
         }
+
         this.slides = this.stage.children;
         this.slider.appendChild(this.stage);
         this.stage = this.slider.children[0];
+
+        return this;
+      }
+    }, {
+      key: 'calcInitialProps',
+      value: function calcInitialProps() {
+        // Dont allow slides per page to exceed the total amount of slides
+        if (this.slidesPerPage > this.total) {
+          this.slidesPerPage = this.total;
+        }
+        this.dotsCount = this.total - (this.slidesPerPage - 1);
+
+        if (this.dotsCount <= 1) {
+          this.hasDotNav = false;
+          this.hasControls = false;
+          return this;
+        }
 
         return this;
       }
@@ -265,20 +294,24 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'createDots',
       value: function createDots() {
-        if (!this.hasDotNav || this.total === 1) {
-          return this;
-        }
+
         var targetElement = document.querySelector(this.dotsContainer);
 
         this.dotNav = document.createElement("ul");
         this.dotNav.className = "slipnslider__dot-nav";
-        for (var i = 0; i < this.total; i++) {
+        for (var i = 0; i < this.dotsCount; i++) {
           this.dotNav.appendChild(document.createElement("li"));
         }
         this.navDots = this.dotNav.querySelectorAll("li");
         this.activeDot = this.navDots[this.activeSlideIndex];
         this.activeDot.className = this.dotIsActive;
         targetElement.appendChild(this.dotNav);
+
+        if (!this.hasDotNav || this.total === 1) {
+          this.dotNav.style.display = "none";
+        } else {
+          this.dotNav.style.display = "";
+        }
 
         return this;
       }
@@ -323,8 +356,8 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'addEventHandlers',
       value: function addEventHandlers() {
-        this.onNextClickHandler = this.moveToAdjacentSlide.bind(this, true);
-        this.onPrevClickHandler = this.moveToAdjacentSlide.bind(this, false);
+        this.onNextClickHandler = this.determineAction.bind(this, true);
+        this.onPrevClickHandler = this.determineAction.bind(this, false);
         this.onDotClickHandler = this.onDotClick.bind(this);
         this.onDragStartHandler = this.onDragStart.bind(this);
         this.onDragHandler = this.onDrag.bind(this);
@@ -345,6 +378,12 @@ define(['exports', 'module'], function (exports, module) {
         }
 
         this.isEnabled = true;
+
+        // Prevent event handlers from being set if there aren't
+        // any other slides to slide to
+        if (this.dotsCount <= 1) {
+          return this;
+        }
 
         if (this.hasControls) {
           this.nextBtn.addEventListener("click", this.onNextClickHandler);
@@ -397,9 +436,11 @@ define(['exports', 'module'], function (exports, module) {
             this.navDots[i].removeEventListener("click", this.onDotClickHandler);
           }
         }
+
         this.stage.removeEventListener(this.pressStart, this.onDragStartHandler);
         window.removeEventListener(this.pressMove, this.onDragHandler);
         window.removeEventListener(this.pressEnd, this.offDragHandler);
+        window.onresize = null;
 
         if (this.pressStart === 'mousedown') {
           window.removeEventListener('keydown', this.keydownHandler);
@@ -422,22 +463,28 @@ define(['exports', 'module'], function (exports, module) {
           this.prevBtn.parentElement.remove();
         }
 
-        if (this.hasDotNav) {
-          this.dotNav.remove();
-        }
+        this.dotNav.remove();
 
         if (this.isInfinite) {
-          // need to remove the last one first otherwise the this.total
+          // need to remove the last ones first otherwise the this.total
           // number wont be accurate
-          this.slides[this.total - 1].remove();
-          this.slides[0].remove();
-          this.total -= 2;
+          var count = this.slidesPerPage + 1;
+          for (var i = this.total - 1, j = this.total - 1 - count; i > j; i--) {
+            this.slides[i].remove();
+          }
+          for (var i = 0; i < count; i++) {
+            this.slides[0].remove();
+          }
+
+          this.total -= count * 2;
         }
 
         for (var i = 0, j = 0; i < this.total; i++) {
           this.slides[j].style.width = "100%";
+          this.slides[j].style.marginLeft = "0";
           this.slider.appendChild(this.slides[j]);
         }
+
         this.stage.remove();
         this.slider.display = "none";
         return this;
@@ -458,11 +505,14 @@ define(['exports', 'module'], function (exports, module) {
         var _this = this;
 
         var totalPadding = (this.total - 1) * this.slidePadding;
-        this.stage.style.width = this.slider.offsetWidth * this.total + totalPadding + 'px';
+        this.slideWidth = Math.ceil((this.slider.offsetWidth - this.slidePadding * (this.slidesPerPage - 1)) / this.slidesPerPage);
+        var stageWidth = this.total * this.slideWidth + totalPadding;
+        this.stage.style.width = stageWidth + 'px';
         this.dragThreshold = this.slider.offsetWidth / 4;
-        var additionalWidth = (this.total - 1) * this.slidePadding / this.total;
+        this.slideBy = this.slideWidth + this.slidePadding;
+
         Array.prototype.forEach.call(this.slides, (function (slide) {
-          slide.style.width = _this.slider.offsetWidth + 'px';
+          slide.style.width = _this.slideWidth + 'px';
           slide.style.marginLeft = _this.slidePadding + 'px';
         }).bind(this));
         return this;
@@ -478,29 +528,34 @@ define(['exports', 'module'], function (exports, module) {
        * @return {SlipnSlider}
        */
     }, {
-      key: 'moveToAdjacentSlide',
-      value: function moveToAdjacentSlide(direction, e) {
+      key: 'determineAction',
+      value: function determineAction(direction, e) {
         if (this.isTransitioning) {
           return this;
         }
         this.onTransitionStart();
-        if (!this.isInfinite) {
-          if (direction && this.atLastSlide()) {
-            this.activeSlideIndex = 0;
-          } else if (!direction && this.atFirstSlide()) {
-            this.activeSlideIndex = this.total - 1;
-          } else {
-            direction ? this.activeSlideIndex++ : this.activeSlideIndex--;
-          }
+
+        if (direction && this.atLastSlide()) {
+          this.activeDotIndex = 0;
+          !this.isInfinite ? this.activeSlideIndex = 0 : this.activeSlideIndex++;
+        } else if (!direction && this.atFirstSlide()) {
+          this.activeDotIndex = this.dotsCount - 1;
+          !this.isInfinite ? this.activeSlideIndex = this.dotsCount - 1 : this.activeSlideIndex--;
+          // Using dotsCount because total will cause it to navigate beyond the slides
+          // when multiple slides per page
         } else {
-          direction ? this.activeSlideIndex++ : this.activeSlideIndex--;
-        }
+            direction ? this.activeSlideIndex++ : this.activeSlideIndex--;
+            direction ? this.activeDotIndex++ : this.activeDotIndex--;
+          }
+
         this.navigateToSlide();
         return this;
       }
     }, {
       key: 'onKeyDown',
       value: function onKeyDown(e) {
+        // might want to have a debounce to limit calls but behaves
+        // as anticipated and isnt too overloading
         if (event.keyCode === 37) {
           this.moveToAdjacentSlide(false);
         } else if (e.keyCode === 39) {
@@ -529,22 +584,10 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
         this.onTransitionStart();
-
-        // Using querySelectorAll because multiple can turn up if isInfinite
-        var slideSelections = this.stage.querySelectorAll('[data-js-slide-index="' + dotIndex + '"]');
-
-        if (this.isInfinite && slideSelections.length > 1) {
-          // if the first dot is clicked, that is fine to navigate to.
-          // The alternative is the last dot was clicked which would result in the
-          // first cloned slide to be the first element from the querySelectorAll
-          // so we want to use the second element from slideSelections
-          slideSelections = dotIndex === 0 ? slideSelections[0] : slideSelections[1];
-        } else {
-          // Dont have to worry about cloned slides
-          slideSelections = slideSelections[0];
+        this.activeDotIndex = this.activeSlideIndex = dotIndex;
+        if (this.isInfinite) {
+          this.activeSlideIndex += this.slidesPerPage + 1;
         }
-
-        this.activeSlideIndex = Array.prototype.indexOf.call(this.slides, slideSelections);
 
         this.navigateToSlide();
 
@@ -565,9 +608,9 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
 
-        if (navigator.userAgent.match(/Android/i)) {
-          e.preventDefault();
-        }
+        // if( navigator.userAgent.match(/Android/i) ) {
+        //   e.preventDefault();
+        // }
 
         this.removeStageTransition();
         this.startpoint = e.pageX;
@@ -599,7 +642,7 @@ define(['exports', 'module'], function (exports, module) {
           window.scrollTo(document.body.scrollLeft, document.body.scrollTop + (this.curYPos - e.pageY));
         }
 
-        var currentPos = (this.activeSlideIndex * this.slider.offsetWidth + this.slidePadding * this.activeSlideIndex) * -1;
+        var currentPos = (this.activeSlideIndex * this.slideWidth + this.slidePadding * this.activeSlideIndex) * -1;
         var movePos = currentPos - (this.startpoint - e.pageX) * 0.7;
 
         if (!this.isInfinite) {
@@ -633,13 +676,18 @@ define(['exports', 'module'], function (exports, module) {
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = "all .75s";
         var travelled = this.startpoint - e.pageX;
+
         if (Math.abs(travelled) >= this.dragThreshold) {
-          if (travelled < 0 && !this.atFirstSlide()) {
-            this.moveToAdjacentSlide(false);
-          } else if (travelled > 0 && !this.atLastSlide()) {
-            this.moveToAdjacentSlide(true);
+          if (this.isInfinite) {
+            travelled > 0 ? this.determineAction(true) : this.determineAction(false);
           } else {
-            this.navigateToSlide();
+            if (travelled < 0 && !this.atFirstSlide()) {
+              this.determineAction(false);
+            } else if (travelled > 0 && !this.atLastSlide()) {
+              this.determineAction(true);
+            } else {
+              this.navigateToSlide();
+            }
           }
         } else {
           this.navigateToSlide();
@@ -708,11 +756,11 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'navigateToSlide',
       value: function navigateToSlide() {
-        var moveTo = this.activeSlideIndex * this.slider.offsetWidth + this.slidePadding * this.activeSlideIndex + 'px';
-        this.stage.style[this.transformPrefix] = 'translate3d(-' + moveTo + ',0,0)';
+        var moveTo = this.activeSlideIndex * this.slideBy;
+
+        this.stage.style[this.transformPrefix] = 'translate3d(-' + moveTo + 'px,0,0)';
         if (this.hasDotNav) {
           this.activeDot.className = "";
-          this.activeDotIndex = parseInt(this.slides[this.activeSlideIndex].dataset.jsSlideIndex);
           this.activeDot = this.navDots[this.activeDotIndex];
           this.activeDot.className = this.dotIsActive;
         }
@@ -729,9 +777,9 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'checkForSlideSwap',
       value: function checkForSlideSwap() {
-        if (this.atFirstSlide()) {
+        if (this.activeDotIndex > 0 && this.activeSlideIndex <= this.slidesPerPage) {
           this.swapSlides(true);
-        } else if (this.atLastSlide()) {
+        } else if (this.activeDotIndex === 0 && this.activeSlideIndex >= this.total - this.slidesPerPage - 1) {
           this.swapSlides(false);
         }
         return this;
@@ -748,7 +796,8 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'swapSlides',
       value: function swapSlides(direction) {
-        this.activeSlideIndex = direction ? this.total - 2 : 1;
+        var slidesPerPageShift = this.slidesPerPage + 1;
+        this.activeSlideIndex = direction ? this.total - slidesPerPageShift - 1 : slidesPerPageShift;
         this.removeStageTransition().navigateToSlide().addStageTransition();
 
         return this;
@@ -788,7 +837,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'atFirstSlide',
       value: function atFirstSlide() {
-        return this.activeSlideIndex === 0 ? true : false;
+        return this.activeDotIndex === 0 ? true : false;
       }
 
       /**
@@ -798,7 +847,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'atLastSlide',
       value: function atLastSlide() {
-        return this.activeSlideIndex === this.total - 1 ? true : false;
+        return this.activeDotIndex === this.dotsCount - 1 ? true : false;
       }
 
       /**
@@ -884,7 +933,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'init',
       value: function init() {
-        this.takeUserOptions().setStage().createControls().createDots().setDataAttrs().setupInfiniteSlider().defineSizes().navigateToSlide().addStageTransition().bindTransitionEvents().addEventHandlers().enable();
+        this.takeUserOptions().setStage().calcInitialProps().createDots().createControls().setupInfiniteSlider().defineSizes().navigateToSlide().addStageTransition().bindTransitionEvents().addEventHandlers().enable();
 
         return this;
       }
