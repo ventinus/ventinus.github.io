@@ -28,7 +28,7 @@ define(['exports', 'module'], function (exports, module) {
        * @type {Object}
        */
       this.optionableProperties = {
-        isInfinite: true,
+        isInfinite: false,
         hasDotNav: true,
         hasControls: true,
         navContainer: '.slipnslider',
@@ -36,7 +36,7 @@ define(['exports', 'module'], function (exports, module) {
         slideElement: 'div',
         stageElement: 'div',
         slidePadding: 10,
-        slidesPerPage: 2
+        slidesPerPage: 1
       };
 
       /**

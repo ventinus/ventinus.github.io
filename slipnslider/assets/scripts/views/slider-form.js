@@ -59,8 +59,8 @@ define(['exports', 'module', '../components/SlipnSlider'], function (exports, mo
 					isInfinite: eval(this.isInfinite.selectedOptions[0].value),
 					hasDotNav: eval(this.hasDotNav.selectedOptions[0].value),
 					hasControls: eval(this.hasControls.selectedOptions[0].value),
-					slidePadding: parseInt(this.slidePadding.value),
-					slidesPerPage: parseInt(this.slidesPerPage.value)
+					slidePadding: parseInt(this.slidePadding.value) || 10,
+					slidesPerPage: parseInt(this.slidesPerPage.value) || 1
 				};
 
 				this.slipnslider = new _SlipnSlider['default'](this.slipnsliderEl, options);
