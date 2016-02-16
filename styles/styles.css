@@ -1,0 +1,27 @@
+.project-collection {
+	display: block;
+	width: 100%;
+	padding: 10px 20px;
+}
+
+.project {
+	display: inline-block;
+	width: 200px;
+	border: 1px solid #aaa;
+	margin: 10px;
+	height: 200px;
+  vertical-align: top;
+  position: relative;
+}
+
+.project img {
+	max-width: 100%;
+	width: 100%;
+}
+
+.project--title {
+	position: absolute;
+	left: 10px;
+	width: 100%;
+	bottom: 10px;
+}
