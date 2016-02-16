@@ -107,7 +107,7 @@ body {
   width: 50%;
   margin: 30px auto 0;
   border: 2px solid #a82bde;
-  padding: 30px;
+  padding: 30px 15px;
   -webkit-border-radius: 40px;
           border-radius: 40px; }
 
@@ -120,11 +120,36 @@ body {
 .slider-form input[type="submit"] {
   width: auto;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  display: block; }
 
-.slider-form > * {
+.slider-form input[type="number"] {
+  padding: 5px; }
+
+.slider-form .slider-form__input {
   display: block;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 14px; }
+
+.slider-form .slider-form__input + * {
+  margin-top: 15px; }
+
+.col {
+  display: block;
+  font-size: 0; }
+
+.col > * {
+  display: inline-block;
+  font-size: initial;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+
+.col--1--sm > * {
   width: 100%; }
 
-.slider-form > * + * {
-  margin-top: 15px; }
+@media screen and (min-width: 768px) {
+  .col--2--md > * {
+    width: 50%;
+    vertical-align: top; } }
