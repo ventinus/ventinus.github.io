@@ -27,11 +27,11 @@ define(['exports', 'module', '../components/SlipnSlider'], function (exports, mo
 			key: 'createChildren',
 			value: function createChildren() {
 				this.submitBtn = this.element.querySelector('input[type="submit"]');
-				this.isInfinite = this.element.querySelector(".js-isInfinite");
-				this.hasDotNav = this.element.querySelector(".js-hasDotNav");
-				this.hasControls = this.element.querySelector(".js-hasControls");
-				this.slidePadding = this.element.querySelector(".js-slidePadding");
-				this.slidesPerPage = this.element.querySelector(".js-slidesPerPage");
+				this.isInfinite = this.element.querySelector('.js-isInfinite');
+				this.hasDotNav = this.element.querySelector('.js-hasDotNav');
+				this.hasControls = this.element.querySelector('.js-hasControls');
+				this.slidePadding = this.element.querySelector('.js-slidePadding');
+				this.slidesPerPage = this.element.querySelector('.js-slidesPerPage');
 				this.slipnsliderEl = window.app.slipnsliderEl || document.querySelector('.slipnslider');
 				this.slipnslider = window.app.slipnSlider || new _SlipnSlider['default'](this.slipnsliderEl);
 				return this;
@@ -55,10 +55,14 @@ define(['exports', 'module', '../components/SlipnSlider'], function (exports, mo
 				this.slipnslider.disable();
 
 				// Get form fields values
+				var infinteVal = this.isInfinite.selectedOptions[0].value === 'true' ? true : false;
+				var dotsVal = this.hasDotNav.selectedOptions[0].value === 'true' ? true : false;
+				var controlsVal = this.hasControls.selectedOptions[0].value === 'true' ? true : false;
+
 				var options = {
-					isInfinite: eval(this.isInfinite.selectedOptions[0].value),
-					hasDotNav: eval(this.hasDotNav.selectedOptions[0].value),
-					hasControls: eval(this.hasControls.selectedOptions[0].value),
+					isInfinite: infinteVal,
+					hasDotNav: dotsVal,
+					hasControls: controlsVal,
 					slidePadding: parseInt(this.slidePadding.value) || 10,
 					slidesPerPage: parseInt(this.slidesPerPage.value) || 1
 				};

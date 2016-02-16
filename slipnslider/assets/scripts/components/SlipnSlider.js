@@ -85,21 +85,21 @@ define(['exports', 'module'], function (exports, module) {
        * Either touch or mouse event
        * @type {Event Handler}
        */
-      this.pressStart = 'ontouchstart' in window ? "touchstart" : "mousedown";
+      this.pressStart = 'ontouchstart' in window ? 'touchstart' : 'mousedown';
 
       /**
        * Determines type of event based of device type
        * Either touch or mouse event
        * @type {Event Handler}
        */
-      this.pressEnd = 'ontouchend' in window ? "touchend" : "mouseup";
+      this.pressEnd = 'ontouchend' in window ? 'touchend' : 'mouseup';
 
       /**
        * Determines type of event based of device type
        * Either touch or mouse event
        * @type {Event Handler}
        */
-      this.pressMove = 'ontouchmove' in window ? "touchmove" : "mousemove";
+      this.pressMove = 'ontouchmove' in window ? 'touchmove' : 'mousemove';
 
       /**
        * Flag for determining if slide is transitioning
@@ -113,7 +113,7 @@ define(['exports', 'module'], function (exports, module) {
        * Classname for adding visibility of dots
        * @type {String - CSS class}
        */
-      this.dotIsActive = "slipnslider__active";
+      this.dotIsActive = 'slipnslider__active';
 
       /**
        * Accurate vendor prefix for adding event listener
@@ -227,7 +227,7 @@ define(['exports', 'module'], function (exports, module) {
         // need additional dots for more than 1 slide per page
         if (this.slidesPerPage > 1) {
           for (var i = 0, j = this.slidesPerPage - 1; i < j; i++) {
-            this.dotNav.appendChild(document.createElement("li"));
+            this.dotNav.appendChild(document.createElement('li'));
             this.dotsCount++;
           }
         }
@@ -248,7 +248,7 @@ define(['exports', 'module'], function (exports, module) {
       key: 'setStage',
       value: function setStage() {
         this.stage = document.createElement(this.stageElement);
-        this.stage.className = "slipnslider__stage";
+        this.stage.className = 'slipnslider__stage';
         this.slides = this.slider.children;
         this.total = this.slides.length;
 
@@ -297,20 +297,20 @@ define(['exports', 'module'], function (exports, module) {
 
         var targetElement = document.querySelector(this.dotsContainer);
 
-        this.dotNav = document.createElement("ul");
-        this.dotNav.className = "slipnslider__dot-nav";
+        this.dotNav = document.createElement('ul');
+        this.dotNav.className = 'slipnslider__dot-nav';
         for (var i = 0; i < this.dotsCount; i++) {
-          this.dotNav.appendChild(document.createElement("li"));
+          this.dotNav.appendChild(document.createElement('li'));
         }
-        this.navDots = this.dotNav.querySelectorAll("li");
+        this.navDots = this.dotNav.querySelectorAll('li');
         this.activeDot = this.navDots[this.activeSlideIndex];
         this.activeDot.className = this.dotIsActive;
         targetElement.appendChild(this.dotNav);
 
         if (!this.hasDotNav || this.total === 1) {
-          this.dotNav.style.display = "none";
+          this.dotNav.style.display = 'none';
         } else {
-          this.dotNav.style.display = "";
+          this.dotNav.style.display = '';
         }
 
         return this;
@@ -331,16 +331,16 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
         var targetElement = document.querySelector(this.navContainer);
-        var controlsWrapper = document.createElement("div");
-        controlsWrapper.className = "slipnslider__controls";
-        this.prevBtn = document.createElement("button");
-        this.prevBtn.className = "slipnslider__prev";
-        this.prevBtn.type = "button";
-        this.prevBtn.innerText = "prev";
-        this.nextBtn = document.createElement("button");
-        this.nextBtn.className = "slipnslider__next";
-        this.nextBtn.type = "button";
-        this.nextBtn.innerText = "next";
+        var controlsWrapper = document.createElement('div');
+        controlsWrapper.className = 'slipnslider__controls';
+        this.prevBtn = document.createElement('button');
+        this.prevBtn.className = 'slipnslider__prev';
+        this.prevBtn.type = 'button';
+        this.prevBtn.innerText = 'prev';
+        this.nextBtn = document.createElement('button');
+        this.nextBtn.className = 'slipnslider__next';
+        this.nextBtn.type = 'button';
+        this.nextBtn.innerText = 'next';
         controlsWrapper.appendChild(this.prevBtn);
         controlsWrapper.appendChild(this.nextBtn);
         targetElement.appendChild(controlsWrapper);
@@ -386,13 +386,13 @@ define(['exports', 'module'], function (exports, module) {
         }
 
         if (this.hasControls) {
-          this.nextBtn.addEventListener("click", this.onNextClickHandler);
-          this.prevBtn.addEventListener("click", this.onPrevClickHandler);
+          this.nextBtn.addEventListener('click', this.onNextClickHandler);
+          this.prevBtn.addEventListener('click', this.onPrevClickHandler);
         }
 
         if (this.hasDotNav) {
           for (var i = 0, j = this.navDots.length; i < j; i++) {
-            this.navDots[i].addEventListener("click", this.onDotClickHandler);
+            this.navDots[i].addEventListener('click', this.onDotClickHandler);
           }
         }
 
@@ -427,13 +427,13 @@ define(['exports', 'module'], function (exports, module) {
         this.isEnabled = false;
 
         if (this.hasControls) {
-          this.nextBtn.removeEventListener("click", this.onNextClickHandler);
-          this.prevBtn.removeEventListener("click", this.onPrevClickHandler);
+          this.nextBtn.removeEventListener('click', this.onNextClickHandler);
+          this.prevBtn.removeEventListener('click', this.onPrevClickHandler);
         }
 
         if (this.hasDotNav) {
           for (var i = 0, j = this.navDots.length; i < j; i++) {
-            this.navDots[i].removeEventListener("click", this.onDotClickHandler);
+            this.navDots[i].removeEventListener('click', this.onDotClickHandler);
           }
         }
 
@@ -480,13 +480,13 @@ define(['exports', 'module'], function (exports, module) {
         }
 
         for (var i = 0, j = 0; i < this.total; i++) {
-          this.slides[j].style.width = "100%";
-          this.slides[j].style.marginLeft = "0";
+          this.slides[j].style.width = '100%';
+          this.slides[j].style.marginLeft = '0';
           this.slider.appendChild(this.slides[j]);
         }
 
         this.stage.remove();
-        this.slider.display = "none";
+        this.slider.display = 'none';
         return this;
       }
 
@@ -537,15 +537,28 @@ define(['exports', 'module'], function (exports, module) {
 
         if (direction && this.atLastSlide()) {
           this.activeDotIndex = 0;
-          !this.isInfinite ? this.activeSlideIndex = 0 : this.activeSlideIndex++;
+          if (!this.isInfinite) {
+            this.activeSlideIndex = 0;
+          } else {
+            this.activeSlideIndex++;
+          }
         } else if (!direction && this.atFirstSlide()) {
           this.activeDotIndex = this.dotsCount - 1;
-          !this.isInfinite ? this.activeSlideIndex = this.dotsCount - 1 : this.activeSlideIndex--;
+          if (!this.isInfinite) {
+            this.activeSlideIndex = this.dotsCount - 1;
+          } else {
+            this.activeSlideIndex--;
+          }
           // Using dotsCount because total will cause it to navigate beyond the slides
           // when multiple slides per page
         } else {
-            direction ? this.activeSlideIndex++ : this.activeSlideIndex--;
-            direction ? this.activeDotIndex++ : this.activeDotIndex--;
+            if (direction) {
+              this.activeSlideIndex++;
+              this.activeDotIndex++;
+            } else {
+              this.activeSlideIndex--;
+              this.activeDotIndex--;
+            }
           }
 
         this.navigateToSlide();
@@ -616,7 +629,7 @@ define(['exports', 'module'], function (exports, module) {
         this.startpoint = e.pageX;
         this.isDragging = true;
 
-        if (this.pressStart == "touchstart") {
+        if (this.pressStart === 'touchstart') {
           this.curYPos = e.pageY;
         }
 
@@ -638,7 +651,7 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
 
-        if (this.pressMove === "touchmove") {
+        if (this.pressMove === 'touchmove') {
           window.scrollTo(document.body.scrollLeft, document.body.scrollTop + (this.curYPos - e.pageY));
         }
 
@@ -674,12 +687,16 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
         this.isDragging = false;
-        this.stage.style[this.transitionPrefix] = "all .75s";
+        this.stage.style[this.transitionPrefix] = 'all .75s';
         var travelled = this.startpoint - e.pageX;
 
         if (Math.abs(travelled) >= this.dragThreshold) {
           if (this.isInfinite) {
-            travelled > 0 ? this.determineAction(true) : this.determineAction(false);
+            if (travelled > 0) {
+              this.determineAction(true);
+            } else {
+              this.determineAction(false);
+            }
           } else {
             if (travelled < 0 && !this.atFirstSlide()) {
               this.determineAction(false);
@@ -734,10 +751,14 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'bindTransitionEvents',
       value: function bindTransitionEvents(callback) {
-        this.transitionEndPrefix && this.stage.addEventListener(this.transitionEndPrefix, (function (event, callback) {
-          callback && callback();
-          this.onTransitionEnd();
-        }).bind(this));
+        if (this.transitionEndPrefix) {
+          this.stage.addEventListener(this.transitionEndPrefix, (function (event, callback) {
+            if (callback) {
+              callback();
+            }
+            this.onTransitionEnd();
+          }).bind(this));
+        }
 
         return this;
       }
@@ -760,7 +781,7 @@ define(['exports', 'module'], function (exports, module) {
 
         this.stage.style[this.transformPrefix] = 'translate3d(-' + moveTo + 'px,0,0)';
         if (this.hasDotNav) {
-          this.activeDot.className = "";
+          this.activeDot.className = '';
           this.activeDot = this.navDots[this.activeDotIndex];
           this.activeDot.className = this.dotIsActive;
         }
@@ -810,7 +831,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'removeStageTransition',
       value: function removeStageTransition() {
-        this.stage.style[this.transitionPrefix] = "all 0s";
+        this.stage.style[this.transitionPrefix] = 'all 0s';
         return this;
       }
 
@@ -825,7 +846,7 @@ define(['exports', 'module'], function (exports, module) {
         var _this2 = this;
 
         setTimeout((function () {
-          _this2.stage.style[_this2.transitionPrefix] = "all .75s";
+          _this2.stage.style[_this2.transitionPrefix] = 'all .75s';
         }).bind(this), 1);
         return this;
       }
