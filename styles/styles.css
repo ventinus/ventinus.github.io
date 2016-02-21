@@ -1,7 +1,10 @@
+body {
+	padding: 10px;
+}
+
 .project-collection {
 	display: block;
 	width: 100%;
-	padding: 10px 20px;
 }
 
 .project {
@@ -10,8 +13,8 @@
 	border: 1px solid #aaa;
 	margin: 10px;
 	height: 200px;
-  vertical-align: top;
-  position: relative;
+  	vertical-align: top;
+  	position: relative;
 }
 
 .project img {
