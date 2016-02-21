@@ -36,8 +36,21 @@ define(['exports', 'module'], function (exports, module) {
         slideElement: 'div',
         stageElement: 'div',
         slidePadding: 10,
-        slidesPerPage: 1
+        slidesPerPage: 1,
+        responsive: {}
       };
+
+      /**
+       * Collection of breakpoints specified through options
+       * @type {Array}
+       */
+      this.breakpoints = [];
+
+      /**
+       * Current minimum width breakpoint
+       * @type {Number}
+       */
+      this.currentBreakpoint = 0;
 
       /**
        * User options object of settable properties
@@ -207,6 +220,49 @@ define(['exports', 'module'], function (exports, module) {
       }
 
       /**
+       * Runs through the breakpoints specified in the responsive property, stores
+       * each breakpoint and finds which breakpoint we are currently in.
+       * @return {Slipnslider}
+       */
+    }, {
+      key: 'parseResponsive',
+      value: function parseResponsive() {
+        var windowWidth = window.innerWidth;
+        for (var breakpoint in this.optionableProperties.responsive) {
+          breakpoint = parseInt(breakpoint);
+          this.breakpoints.push(breakpoint);
+          if (breakpoint < windowWidth) {
+            this.currentBreakpoint = breakpoint;
+          }
+        }
+
+        if (this.breakpoints.length === 0) {
+          return this;
+        }
+
+        this.applyCurrentBreakptProps();
+
+        return this;
+      }
+
+      /**
+       * Overwrites any defaults or options set with the options
+       * specified for the current breakpoint.
+       * @return {Slipnslider}
+       */
+    }, {
+      key: 'applyCurrentBreakptProps',
+      value: function applyCurrentBreakptProps() {
+        for (var item in this.optionableProperties.responsive[this.currentBreakpoint]) {
+          if (typeof this.optionableProperties.responsive[this.currentBreakpoint][item] === typeof this[item]) {
+            this[item] = this.optionableProperties.responsive[this.currentBreakpoint][item];
+          }
+        }
+
+        return this;
+      }
+
+      /**
        * Clones the first and last slide and appends each
        * to the opposite end of the slider to have that
        * oh so pleasurable infinite feel. Updates the values
@@ -217,8 +273,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'setupInfiniteSlider',
       value: function setupInfiniteSlider() {
-        if (!this.isInfinite || this.total === 1 || this.total <= this.slidesPerPage) {
-          this.isInfinite = false;
+        if (!this.isInfinite) {
           return this;
         }
 
@@ -280,6 +335,12 @@ define(['exports', 'module'], function (exports, module) {
 
         return this;
       }
+
+      /**
+       * Checks if there are enough slides for the desired setup
+       * to prevent odd and unwanted behaviour
+       * @return {Slipnslider}
+       */
     }, {
       key: 'calcInitialProps',
       value: function calcInitialProps() {
@@ -289,9 +350,11 @@ define(['exports', 'module'], function (exports, module) {
         }
         this.dotsCount = this.total - (this.slidesPerPage - 1);
 
+        // Disallow nav and infinite becaause there is nowhere to go
         if (this.dotsCount <= 1) {
           this.hasDotNav = false;
           this.hasControls = false;
+          this.isInfinite = false;
           return this;
         }
 
@@ -307,7 +370,6 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'createDots',
       value: function createDots() {
-
         var targetElement = document.querySelector(this.dotsContainer);
 
         this.dotNav = document.createElement('ul');
@@ -320,11 +382,8 @@ define(['exports', 'module'], function (exports, module) {
         this.activeDot.className = this.dotIsActive;
         targetElement.appendChild(this.dotNav);
 
-        if (!this.hasDotNav || this.total === 1) {
-          this.dotNav.style.display = 'none';
-        } else {
-          this.dotNav.style.display = '';
-        }
+        var dispStyle = !this.hasDotNav ? 'none' : '';
+        this.dotNav.style.display = dispStyle;
 
         return this;
       }
@@ -413,7 +472,7 @@ define(['exports', 'module'], function (exports, module) {
         window.addEventListener(this.pressMove, this.onDragHandler);
         window.addEventListener(this.pressEnd, this.offDragHandler);
         window.onresize = (function () {
-          this.defineSizes();
+          this.onWindowResize();
         }).bind(this);
 
         // check for not mobile to attach keystroke eventhandler
@@ -508,6 +567,48 @@ define(['exports', 'module'], function (exports, module) {
       // =========================================================
 
       /**
+       * Checks for when the user enters a different breakpoint
+       * and decides to rebuild the slider
+       * @return {Slipnslider}
+       */
+    }, {
+      key: 'onWindowResize',
+      value: function onWindowResize() {
+        this.defineSizes();
+        if (this.breakpoints.length === 0) {
+          return this;
+        }
+
+        var currentBreakIndex = this.breakpoints.indexOf(this.currentBreakpoint);
+        var windowWidth = window.innerWidth;
+
+        if (windowWidth >= this.breakpoints[currentBreakIndex + 1]) {
+          this.currentBreakpoint = this.breakpoints[currentBreakIndex + 1];
+          this.rebuildSlider();
+        } else if (currentBreakIndex > 0 && windowWidth < this.breakpoints[currentBreakIndex]) {
+          this.currentBreakpoint = this.breakpoints[currentBreakIndex - 1];
+          this.rebuildSlider();
+        }
+
+        return this;
+      }
+
+      /**
+       * Disables and resets current slide and dot indices back
+       * to the beginning and runs most of the init functions
+       * except for the parsing options function
+       * @return {Slipnslider}
+       */
+    }, {
+      key: 'rebuildSlider',
+      value: function rebuildSlider() {
+        this.activeSlideIndex = this.activeDotIndex = 0;
+        this.disable().applyCurrentBreakptProps().setStage().calcInitialProps().createDots().createControls().setupInfiniteSlider().defineSizes().navigateToSlide().addStageTransition().bindTransitionEvents().addEventHandlers().enable();
+
+        return this;
+      }
+
+      /**
        * Sets the width of the slider stage as well as
        * the contained slides
        * @return {SlipnSlider}
@@ -517,6 +618,7 @@ define(['exports', 'module'], function (exports, module) {
       value: function defineSizes() {
         var _this = this;
 
+        this.removeStageTransition();
         var totalPadding = (this.total - 1) * this.slidePadding;
         this.slideWidth = Math.ceil((this.slider.offsetWidth - this.slidePadding * (this.slidesPerPage - 1)) / this.slidesPerPage);
         var stageWidth = this.total * this.slideWidth + totalPadding;
@@ -524,10 +626,12 @@ define(['exports', 'module'], function (exports, module) {
         this.dragThreshold = this.slider.offsetWidth / 4;
         this.slideBy = this.slideWidth + this.slidePadding;
 
-        Array.prototype.forEach.call(this.slides, (function (slide) {
+        Array.prototype.forEach.call(this.slides, function (slide) {
           slide.style.width = _this.slideWidth + 'px';
           slide.style.marginLeft = _this.slidePadding + 'px';
-        }).bind(this));
+        });
+
+        this.navigateToSlide().addStageTransition();
         return this;
       }
 
@@ -974,7 +1078,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'init',
       value: function init() {
-        this.takeUserOptions().setStage().calcInitialProps().createDots().createControls().setupInfiniteSlider().defineSizes().navigateToSlide().addStageTransition().bindTransitionEvents().addEventHandlers().enable();
+        this.takeUserOptions().parseResponsive().setStage().calcInitialProps().createDots().createControls().setupInfiniteSlider().defineSizes().navigateToSlide().addStageTransition().bindTransitionEvents().addEventHandlers().enable();
 
         return this;
       }
