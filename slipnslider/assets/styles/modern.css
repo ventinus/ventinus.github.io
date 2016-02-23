@@ -109,7 +109,9 @@ body {
   border: 2px solid #a82bde;
   padding: 30px 15px;
   -webkit-border-radius: 40px;
-          border-radius: 40px; }
+          border-radius: 40px;
+  -webkit-box-shadow: 6px 6px 10px -3px #000;
+          box-shadow: 6px 6px 10px -3px #000; }
 
 .slider-form select {
   -webkit-appearance: none;
