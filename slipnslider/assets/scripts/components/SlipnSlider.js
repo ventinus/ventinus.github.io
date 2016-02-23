@@ -690,12 +690,15 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onKeyDown',
       value: function onKeyDown(e) {
+        if (e.srcElement.localName !== 'body') {
+          return this;
+        }
         // might want to have a debounce to limit calls but behaves
         // as anticipated and isnt too overloading
         if (event.keyCode === 37) {
-          this.moveToAdjacentSlide(false);
+          this.determineAction(false);
         } else if (e.keyCode === 39) {
-          this.moveToAdjacentSlide(true);
+          this.determineAction(true);
         }
 
         return this;
