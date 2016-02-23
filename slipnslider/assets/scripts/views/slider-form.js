@@ -59,11 +59,16 @@ define(['exports', 'module', '../components/SlipnSlider'], function (exports, mo
 				var dotsVal = this.hasDotNav.selectedOptions[0].value === 'true' ? true : false;
 				var controlsVal = this.hasControls.selectedOptions[0].value === 'true' ? true : false;
 
+				var slidePaddingVal = parseInt(this.slidePadding.value);
+				if (slidePaddingVal === NaN) {
+					slidePaddingVal = 10;
+				}
+
 				var options = {
 					isInfinite: infinteVal,
 					hasDotNav: dotsVal,
 					hasControls: controlsVal,
-					slidePadding: parseInt(this.slidePadding.value) || 10,
+					slidePadding: slidePaddingVal,
 					slidesPerPage: parseInt(this.slidesPerPage.value) || 1
 				};
 
