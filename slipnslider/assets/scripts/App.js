@@ -35,7 +35,7 @@ define(['exports', 'module', './components/SlipnSlider', './views/slider-form'],
     }, {
       key: 'initSlider',
       value: function initSlider() {
-        this.slipnSlider = new _SlipnSlider['default'](this.slipnsliderEl);
+        this.slipnSlider = new _SlipnSlider['default'](this.slipnsliderEl, { responsive: { 400: { slidesPerPage: 2 }, 700: { slidesPerPage: 4 } } });
         this.slipnSlider.init();
         return this;
       }

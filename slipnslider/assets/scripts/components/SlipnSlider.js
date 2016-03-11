@@ -2,7 +2,7 @@ define(['exports', 'module'], function (exports, module) {
   // Features to add:
   //  autoplay, slides to show at a time, paging/how they transition (flowing behind
   //  instead of strictly left and right)
-
+  // TODO: check into why controls arent rebuilt
   'use strict';
 
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -32,10 +32,17 @@ define(['exports', 'module'], function (exports, module) {
         hasControls: true,
         navContainer: '.slipnslider',
         dotsContainer: '.slipnslider',
+        navText: ['prev', 'next'],
         slideElement: 'div',
         stageElement: 'div',
         slidePadding: 10,
         slidesPerPage: 1,
+        prevNavigationCallback: function prevNavigationCallback() {
+          console.log('prev callback');
+        },
+        nextNavigationCallback: function nextNavigationCallback() {
+          console.log('next callback');
+        },
         responsive: {}
       };
 
@@ -227,7 +234,7 @@ define(['exports', 'module'], function (exports, module) {
       key: 'parseResponsive',
       value: function parseResponsive() {
         var windowWidth = window.innerWidth;
-        for (var breakpoint in this.optionableProperties.responsive) {
+        for (var breakpoint in this.responsive) {
           breakpoint = parseInt(breakpoint);
           this.breakpoints.push(breakpoint);
           if (breakpoint < windowWidth) {
@@ -252,9 +259,9 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'applyCurrentBreakptProps',
       value: function applyCurrentBreakptProps() {
-        for (var item in this.optionableProperties.responsive[this.currentBreakpoint]) {
-          if (typeof this.optionableProperties.responsive[this.currentBreakpoint][item] === typeof this[item]) {
-            this[item] = this.optionableProperties.responsive[this.currentBreakpoint][item];
+        for (var item in this.responsive[this.currentBreakpoint]) {
+          if (typeof this.responsive[this.currentBreakpoint][item] === typeof this[item]) {
+            this[item] = this.responsive[this.currentBreakpoint][item];
           }
         }
 
@@ -272,7 +279,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'setupInfiniteSlider',
       value: function setupInfiniteSlider() {
-        if (!this.isInfinite) {
+        if (!this.isInfiniteOverride) {
           return this;
         }
 
@@ -351,10 +358,14 @@ define(['exports', 'module'], function (exports, module) {
 
         // Disallow nav and infinite becaause there is nowhere to go
         if (this.dotsCount <= 1) {
-          this.hasDotNav = false;
-          this.hasControls = false;
-          this.isInfinite = false;
+          this.hasDotNavOverride = false;
+          this.hasControlsOverride = false;
+          this.isInfiniteOverride = false;
           return this;
+        } else {
+          this.hasDotNavOverride = this.hasDotNav;
+          this.hasControlsOverride = this.hasControls;
+          this.isInfiniteOverride = this.isInfinite;
         }
 
         return this;
@@ -381,7 +392,7 @@ define(['exports', 'module'], function (exports, module) {
         this.activeDot.className = this.dotIsActive;
         targetElement.appendChild(this.dotNav);
 
-        var dispStyle = !this.hasDotNav ? 'none' : '';
+        var dispStyle = !this.hasDotNavOverride ? 'none' : '';
         this.dotNav.style.display = dispStyle;
 
         return this;
@@ -398,7 +409,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'createControls',
       value: function createControls() {
-        if (!this.hasControls || this.total === 1) {
+        if (!this.hasControlsOverride || this.total === 1) {
           return this;
         }
         var targetElement = document.querySelector(this.navContainer);
@@ -407,11 +418,11 @@ define(['exports', 'module'], function (exports, module) {
         this.prevBtn = document.createElement('button');
         this.prevBtn.className = 'slipnslider__prev';
         this.prevBtn.type = 'button';
-        this.prevBtn.innerText = 'prev';
+        this.prevBtn.innerHTML = this.navText[0];
         this.nextBtn = document.createElement('button');
         this.nextBtn.className = 'slipnslider__next';
         this.nextBtn.type = 'button';
-        this.nextBtn.innerText = 'next';
+        this.nextBtn.innerHTML = this.navText[1];
         controlsWrapper.appendChild(this.prevBtn);
         controlsWrapper.appendChild(this.nextBtn);
         targetElement.appendChild(controlsWrapper);
@@ -434,6 +445,7 @@ define(['exports', 'module'], function (exports, module) {
         this.onDragHandler = this.onDrag.bind(this);
         this.offDragHandler = this.offDrag.bind(this);
         this.keydownHandler = this.onKeyDown.bind(this);
+        this.onResizeHandler = this.onWindowResize.bind(this);
         return this;
       }
 
@@ -452,16 +464,18 @@ define(['exports', 'module'], function (exports, module) {
 
         // Prevent event handlers from being set if there aren't
         // any other slides to slide to
+        window.addEventListener('resize', this.onResizeHandler);
+
         if (this.dotsCount <= 1) {
           return this;
         }
 
-        if (this.hasControls) {
+        if (this.hasControlsOverride) {
           this.nextBtn.addEventListener('click', this.onNextClickHandler);
           this.prevBtn.addEventListener('click', this.onPrevClickHandler);
         }
 
-        if (this.hasDotNav) {
+        if (this.hasDotNavOverride) {
           for (var i = 0, j = this.navDots.length; i < j; i++) {
             this.navDots[i].addEventListener('click', this.onDotClickHandler);
           }
@@ -470,9 +484,6 @@ define(['exports', 'module'], function (exports, module) {
         this.stage.addEventListener(this.pressStart, this.onDragStartHandler);
         window.addEventListener(this.pressMove, this.onDragHandler);
         window.addEventListener(this.pressEnd, this.offDragHandler);
-        window.onresize = (function () {
-          this.onWindowResize();
-        }).bind(this);
 
         // check for not mobile to attach keystroke eventhandler
         if (this.pressStart === 'mousedown') {
@@ -497,12 +508,12 @@ define(['exports', 'module'], function (exports, module) {
 
         this.isEnabled = false;
 
-        if (this.hasControls) {
+        if (this.hasControlsOverride) {
           this.nextBtn.removeEventListener('click', this.onNextClickHandler);
           this.prevBtn.removeEventListener('click', this.onPrevClickHandler);
         }
 
-        if (this.hasDotNav) {
+        if (this.hasDotNavOverride) {
           for (var i = 0, j = this.navDots.length; i < j; i++) {
             this.navDots[i].removeEventListener('click', this.onDotClickHandler);
           }
@@ -511,7 +522,7 @@ define(['exports', 'module'], function (exports, module) {
         this.stage.removeEventListener(this.pressStart, this.onDragStartHandler);
         window.removeEventListener(this.pressMove, this.onDragHandler);
         window.removeEventListener(this.pressEnd, this.offDragHandler);
-        window.onresize = null;
+        window.removeEventListener('resize', this.onResizeHandler);
 
         if (this.pressStart === 'mousedown') {
           window.removeEventListener('keydown', this.keydownHandler);
@@ -530,13 +541,13 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'removeCreatedElements',
       value: function removeCreatedElements() {
-        if (this.hasControls) {
+        if (this.hasControlsOverride) {
           this.prevBtn.parentElement.remove();
         }
 
         this.dotNav.remove();
 
-        if (this.isInfinite) {
+        if (this.isInfiniteOverride) {
           // need to remove the last ones first otherwise the this.total
           // number wont be accurate
           var count = this.slidesPerPage + 1;
@@ -651,16 +662,22 @@ define(['exports', 'module'], function (exports, module) {
         }
         this.onTransitionStart();
 
+        if (direction) {
+          this.nextNavigationCallback();
+        } else {
+          this.prevNavigationCallback();
+        }
+
         if (direction && this.atLastSlide()) {
           this.activeDotIndex = 0;
-          if (!this.isInfinite) {
+          if (!this.isInfiniteOverride) {
             this.activeSlideIndex = 0;
           } else {
             this.activeSlideIndex++;
           }
         } else if (!direction && this.atFirstSlide()) {
           this.activeDotIndex = this.dotsCount - 1;
-          if (!this.isInfinite) {
+          if (!this.isInfiniteOverride) {
             this.activeSlideIndex = this.dotsCount - 1;
           } else {
             this.activeSlideIndex--;
@@ -724,7 +741,7 @@ define(['exports', 'module'], function (exports, module) {
         }
         this.onTransitionStart();
         this.activeDotIndex = this.activeSlideIndex = dotIndex;
-        if (this.isInfinite) {
+        if (this.isInfiniteOverride) {
           this.activeSlideIndex += this.slidesPerPage + 1;
         }
 
@@ -784,7 +801,7 @@ define(['exports', 'module'], function (exports, module) {
         var currentPos = (this.activeSlideIndex * this.slideWidth + this.slidePadding * this.activeSlideIndex) * -1;
         var movePos = currentPos - (this.startpoint - e.pageX) * 0.7;
 
-        if (!this.isInfinite) {
+        if (!this.isInfiniteOverride) {
           // Dividing by 4 and multiplying by 0.75 allows a
           // peek over either end by a quarter of slide width
           if (movePos >= this.slider.offsetWidth / 4) {
@@ -817,7 +834,7 @@ define(['exports', 'module'], function (exports, module) {
         var travelled = this.startpoint - e.pageX;
 
         if (Math.abs(travelled) >= this.dragThreshold) {
-          if (this.isInfinite) {
+          if (this.isInfiniteOverride) {
             if (travelled > 0) {
               this.determineAction(true);
             } else {
@@ -861,7 +878,7 @@ define(['exports', 'module'], function (exports, module) {
       key: 'onTransitionEnd',
       value: function onTransitionEnd() {
         this.isTransitioning = false;
-        if (this.isInfinite) {
+        if (this.isInfiniteOverride) {
           this.checkForSlideSwap();
         }
 
@@ -906,7 +923,7 @@ define(['exports', 'module'], function (exports, module) {
         var moveTo = this.activeSlideIndex * this.slideBy;
 
         this.stage.style[this.transformPrefix] = 'translate3d(-' + moveTo + 'px,0,0)';
-        if (this.hasDotNav) {
+        if (this.hasDotNavOverride) {
           this.activeDot.className = '';
           this.activeDot = this.navDots[this.activeDotIndex];
           this.activeDot.className = this.dotIsActive;
