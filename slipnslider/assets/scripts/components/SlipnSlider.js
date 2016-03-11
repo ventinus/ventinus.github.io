@@ -2,7 +2,7 @@ define(['exports', 'module'], function (exports, module) {
   // Features to add:
   //  autoplay, slides to show at a time, paging/how they transition (flowing behind
   //  instead of strictly left and right)
-  // TODO: check into why controls arent rebuilt
+
   'use strict';
 
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -327,10 +327,7 @@ define(['exports', 'module'], function (exports, module) {
         this.total = this.slides.length;
 
         for (var i = 0; i < this.total; i++) {
-          var slide = document.createElement(this.slideElement);
-          for (var j = 0, h = this.slides[0].children.length; j < h; j++) {
-            slide.appendChild(this.slides[0].children[0]);
-          }
+          var slide = this.slides[0].cloneNode(true);
           this.slides[0].remove();
           this.stage.appendChild(slide);
         }
