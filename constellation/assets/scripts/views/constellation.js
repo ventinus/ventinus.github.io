@@ -236,7 +236,7 @@ define(['exports', 'module'], function (exports, module) {
 				this.ctx.strokeStyle = this.starColor;
 				this.ctx.strokeWidth = 1;
 				// Make 30 dots with a random x and y position and x and y speeds
-				for (var i = 30; i >= 0; i--) {
+				for (var i = 50; i >= 0; i--) {
 					// create random x and y coordinates
 					var x = Math.floor(Math.random() * this.element.width);
 					var y = Math.floor(Math.random() * this.element.height);
