@@ -19,8 +19,8 @@ define(['exports', 'module'], function (exports, module) {
 			this.element.height = 0;
 			this.dotSize = 0;
 			this.starColor = '';
-			this.mouseX = 0;
-			this.mouseY = 0;
+			this.mouseX = -999;
+			this.mouseY = -999;
 
 			return this;
 		}
