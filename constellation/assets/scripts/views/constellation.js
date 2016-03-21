@@ -236,7 +236,7 @@ define(['exports', 'module'], function (exports, module) {
 				this.ctx.strokeStyle = this.starColor;
 				this.ctx.strokeWidth = 1;
 				// Make 30 dots with a random x and y position and x and y speeds
-				for (var i = 50; i >= 0; i--) {
+				for (var i = 30; i >= 0; i--) {
 					// create random x and y coordinates
 					var x = Math.floor(Math.random() * this.element.width);
 					var y = Math.floor(Math.random() * this.element.height);
@@ -407,7 +407,7 @@ define(['exports', 'module'], function (exports, module) {
 
 						// use pythagorean theorem to calculate the distance between the 2 points
 						var distance = Math.sqrt(Math.pow(Math.abs(this.mouseX - dot.x), 2) + Math.pow(Math.abs(this.mouseY - dot.y), 2));
-						dot.size = Math.max(Math.min(20 - distance / 20, 30), this.dotSize);
+						dot.size = Math.max(Math.min(10 - distance / 10, 10 /*largest size*/), this.dotSize);
 					}
 				} catch (err) {
 					_didIteratorError4 = true;
