@@ -329,7 +329,6 @@ define(['exports', 'module'], function (exports, module) {
         for (var i = 0; i < this.total; i++) {
           var slide = this.slides[0].cloneNode(true);
           this.slider.removeChild(this.slides[0]);
-          // this.slides[0].remove()
           this.stage.appendChild(slide);
         }
 
@@ -540,11 +539,11 @@ define(['exports', 'module'], function (exports, module) {
       key: 'removeCreatedElements',
       value: function removeCreatedElements() {
         if (this.hasControlsOverride) {
-          this.slider.removeChild(this.prevBtn.parentElement);
-          // this.prevBtn.parentElement.remove();
+          // controls may be appended elsewhere
+          this.prevBtn.parentElement.parentElement.removeChild(this.prevBtn.parentElement);
         }
 
-        this.slider.removeChild(this.dotNav);
+        this.dotNav.parentElement.removeChild(this.dotNav);
 
         if (this.isInfiniteOverride) {
           // need to remove the last ones first otherwise the this.total
