@@ -197,6 +197,15 @@ define(['exports', 'module'], function (exports, module) {
        * @default 30
        */
       this.dragThreshold = 30;
+
+      /**
+       * Flag to determine if the user has dragged
+       * beyond the horizontal threshold. Necessary for
+       * touch devices only
+       * @type {Boolean}
+       * @default false
+       */
+      this.brokeHorizontalThreshold = false;
     }
 
     // =========================================================
@@ -770,10 +779,10 @@ define(['exports', 'module'], function (exports, module) {
         this.startpoint = e.pageX;
         this.isDragging = true;
 
-        // if (this.pressStart === 'touchstart') {
-        this.curYPos = e.pageY;
-        this.thresholdBroken = false;
-        // }
+        if (this.pressStart === 'touchstart') {
+          this.curYPos = e.pageY;
+          this.brokeHorizontalThreshold = false;
+        }
 
         return this;
       }
@@ -793,22 +802,23 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
 
-        // if (this.pressMove === 'touchmove') {
-        var yMvt = Math.abs(this.curYPos - e.pageY);
-        var xMvt = Math.abs(this.startpoint - e.pageX);
-        if (xMvt > 20) {
-          this.thresholdBroken = true;
-        }
-        if (!this.thresholdBroken) {
-          if (xMvt <= 20 && yMvt >= 10 && yMvt > xMvt) {
-            this.isDragging = false;
-            this.stage.style[this.transitionPrefix] = 'all .75s';
-            this.navigateToSlide();
-            return this;
+        if (this.pressMove === 'touchmove') {
+          // Check to see if user is moving more vertically than horizontally
+          // to then disable the drag
+          var yMvt = Math.abs(this.curYPos - e.pageY);
+          var xMvt = Math.abs(this.startpoint - e.pageX);
+          if (xMvt > 20) {
+            this.brokeHorizontalThreshold = true;
           }
-          // window.scrollTo(document.body.scrollLeft, document.body.scrollTop + (this.curYPos - e.pageY));
+          if (!this.brokeHorizontalThreshold) {
+            if (xMvt <= 20 && yMvt >= 10 && yMvt > xMvt) {
+              this.isDragging = false;
+              this.stage.style[this.transitionPrefix] = 'all .75s';
+              this.navigateToSlide();
+              return this;
+            }
+          }
         }
-        console.log(this.curYPos, e.pageY);
 
         var currentPos = (this.activeSlideIndex * this.slideWidth + this.slidePadding * this.activeSlideIndex) * -1;
         var movePos = currentPos - (this.startpoint - e.pageX) * 0.7;
