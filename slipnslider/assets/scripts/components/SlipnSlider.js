@@ -461,30 +461,30 @@ define(['exports', 'module'], function (exports, module) {
 
         // Prevent event handlers from being set if there aren't
         // any other slides to slide to
-        window.addEventListener('resize', this.onResizeHandler);
+        window.addEventListener('resize', this.onResizeHandler, false);
 
         if (this.dotsCount <= 1) {
           return this;
         }
 
         if (this.hasControlsOverride) {
-          this.nextBtn.addEventListener('click', this.onNextClickHandler);
-          this.prevBtn.addEventListener('click', this.onPrevClickHandler);
+          this.nextBtn.addEventListener('click', this.onNextClickHandler, false);
+          this.prevBtn.addEventListener('click', this.onPrevClickHandler, false);
         }
 
         if (this.hasDotNavOverride) {
           for (var i = 0, j = this.navDots.length; i < j; i++) {
-            this.navDots[i].addEventListener('click', this.onDotClickHandler);
+            this.navDots[i].addEventListener('click', this.onDotClickHandler, false);
           }
         }
 
-        this.stage.addEventListener(this.pressStart, this.onDragStartHandler);
-        window.addEventListener(this.pressMove, this.onDragHandler);
-        window.addEventListener(this.pressEnd, this.offDragHandler);
+        this.stage.addEventListener(this.pressStart, this.onDragStartHandler, false);
+        window.addEventListener(this.pressMove, this.onDragHandler, false);
+        window.addEventListener(this.pressEnd, this.offDragHandler, false);
 
         // check for not mobile to attach keystroke eventhandler
         if (this.pressStart === 'mousedown') {
-          window.addEventListener('keydown', this.keydownHandler);
+          window.addEventListener('keydown', this.keydownHandler, false);
         }
 
         return this;
@@ -506,23 +506,23 @@ define(['exports', 'module'], function (exports, module) {
         this.isEnabled = false;
 
         if (this.hasControlsOverride) {
-          this.nextBtn.removeEventListener('click', this.onNextClickHandler);
-          this.prevBtn.removeEventListener('click', this.onPrevClickHandler);
+          this.nextBtn.removeEventListener('click', this.onNextClickHandler, false);
+          this.prevBtn.removeEventListener('click', this.onPrevClickHandler, false);
         }
 
         if (this.hasDotNavOverride) {
           for (var i = 0, j = this.navDots.length; i < j; i++) {
-            this.navDots[i].removeEventListener('click', this.onDotClickHandler);
+            this.navDots[i].removeEventListener('click', this.onDotClickHandler, false);
           }
         }
 
-        this.stage.removeEventListener(this.pressStart, this.onDragStartHandler);
-        window.removeEventListener(this.pressMove, this.onDragHandler);
-        window.removeEventListener(this.pressEnd, this.offDragHandler);
-        window.removeEventListener('resize', this.onResizeHandler);
+        this.stage.removeEventListener(this.pressStart, this.onDragStartHandler, false);
+        window.removeEventListener(this.pressMove, this.onDragHandler, false);
+        window.removeEventListener(this.pressEnd, this.offDragHandler, false);
+        window.removeEventListener('resize', this.onResizeHandler, false);
 
         if (this.pressStart === 'mousedown') {
-          window.removeEventListener('keydown', this.keydownHandler);
+          window.removeEventListener('keydown', this.keydownHandler, false);
         }
 
         this.removeCreatedElements();
@@ -898,7 +898,7 @@ define(['exports', 'module'], function (exports, module) {
               callback();
             }
             this.onTransitionEnd();
-          }).bind(this));
+          }).bind(this), false);
         }
 
         return this;
