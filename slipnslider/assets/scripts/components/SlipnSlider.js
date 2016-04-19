@@ -770,9 +770,10 @@ define(['exports', 'module'], function (exports, module) {
         this.startpoint = e.pageX;
         this.isDragging = true;
 
-        if (this.pressStart === 'touchstart') {
-          this.curYPos = e.pageY;
-        }
+        // if (this.pressStart === 'touchstart') {
+        this.curYPos = e.pageY;
+        this.thresholdBroken = false;
+        // }
 
         return this;
       }
@@ -792,9 +793,22 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
 
-        if (this.pressMove === 'touchmove') {
-          window.scrollTo(document.body.scrollLeft, document.body.scrollTop + (this.curYPos - e.pageY));
+        // if (this.pressMove === 'touchmove') {
+        var yMvt = Math.abs(this.curYPos - e.pageY);
+        var xMvt = Math.abs(this.startpoint - e.pageX);
+        if (xMvt > 20) {
+          this.thresholdBroken = true;
         }
+        if (!this.thresholdBroken) {
+          if (xMvt <= 20 && yMvt >= 10 && yMvt > xMvt) {
+            this.isDragging = false;
+            this.stage.style[this.transitionPrefix] = 'all .75s';
+            this.navigateToSlide();
+            return this;
+          }
+          // window.scrollTo(document.body.scrollLeft, document.body.scrollTop + (this.curYPos - e.pageY));
+        }
+        console.log(this.curYPos, e.pageY);
 
         var currentPos = (this.activeSlideIndex * this.slideWidth + this.slidePadding * this.activeSlideIndex) * -1;
         var movePos = currentPos - (this.startpoint - e.pageX) * 0.7;
@@ -829,7 +843,7 @@ define(['exports', 'module'], function (exports, module) {
         }
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
-        var travelled = this.startpoint - e.pageX;
+        var travelled = e !== undefined ? this.startpoint - e.pageX : 0;
 
         if (Math.abs(travelled) >= this.dragThreshold) {
           if (this.isInfiniteOverride) {
