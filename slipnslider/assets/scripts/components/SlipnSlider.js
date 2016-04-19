@@ -117,21 +117,21 @@ define(['exports', 'module'], function (exports, module) {
        * Either touch or mouse event
        * @type {Event Handler}
        */
-      this.pressStart = 'ontouchstart' in window ? 'touchstart' : 'mousedown';
+      this.pressStart = '';
 
       /**
        * Determines type of event based of device type
        * Either touch or mouse event
        * @type {Event Handler}
        */
-      this.pressEnd = 'ontouchend' in window ? 'touchend' : 'mouseup';
+      this.pressEnd = '';
 
       /**
        * Determines type of event based of device type
        * Either touch or mouse event
        * @type {Event Handler}
        */
-      this.pressMove = 'ontouchmove' in window ? 'touchmove' : 'mousemove';
+      this.pressMove = '';
 
       /**
        * Flag for determining if slide is transitioning
@@ -986,9 +986,9 @@ define(['exports', 'module'], function (exports, module) {
       value: function addStageTransition() {
         var _this2 = this;
 
-        setTimeout((function () {
+        setTimeout(function () {
           _this2.stage.style[_this2.transitionPrefix] = 'all .75s';
-        }).bind(this), 1);
+        }, 1);
         return this;
       }
 
@@ -1083,6 +1083,36 @@ define(['exports', 'module'], function (exports, module) {
           }
         }
       }
+    }, {
+      key: 'determineBrowserEvents',
+      value: function determineBrowserEvents() {
+        var start = undefined,
+            end = undefined,
+            move = undefined;
+        if ('ontouchstart' in window) {
+          start = 'touchstart';
+          end = 'touchend';
+          move = 'touchmove';
+        } else if (window.PointerEvent) {
+          start = 'pointerdown';
+          end = 'pointerup';
+          move = 'pointermove';
+        } else if (window.MSPointerEvent) {
+          start = 'MSPointerDown';
+          end = 'MSPointerUp';
+          move = 'MSPointerMove';
+        } else {
+          start = 'mousedown';
+          end = 'mouseup';
+          move = 'mousemove';
+        }
+
+        this.pressStart = start;
+        this.pressEnd = end;
+        this.pressMove = move;
+
+        return this;
+      }
 
       // =========================================================
       // Initialization function
@@ -1095,7 +1125,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'init',
       value: function init() {
-        this.takeUserOptions().parseResponsive().setStage().calcInitialProps().createDots().createControls().setupInfiniteSlider().defineSizes().navigateToSlide().addStageTransition().bindTransitionEvents().addEventHandlers().enable();
+        this.determineBrowserEvents().takeUserOptions().parseResponsive().setStage().calcInitialProps().createDots().createControls().setupInfiniteSlider().defineSizes().navigateToSlide().addStageTransition().bindTransitionEvents().addEventHandlers().enable();
 
         return this;
       }
