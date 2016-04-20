@@ -633,8 +633,6 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'defineSizes',
       value: function defineSizes() {
-        var _this = this;
-
         this.removeStageTransition();
         var totalPadding = (this.total - 1) * this.slidePadding;
         this.slideWidth = Math.ceil((this.slider.offsetWidth - this.slidePadding * (this.slidesPerPage - 1)) / this.slidesPerPage);
@@ -643,10 +641,10 @@ define(['exports', 'module'], function (exports, module) {
         this.dragThreshold = this.slider.offsetWidth / 4;
         this.slideBy = this.slideWidth + this.slidePadding;
 
-        Array.prototype.forEach.call(this.slides, function (slide) {
-          slide.style.width = _this.slideWidth + 'px';
-          slide.style.marginLeft = _this.slidePadding + 'px';
-        });
+        for (var i = 0, j = this.slides.length; i < j; i++) {
+          this.slides[i].style.width = this.slideWidth + 'px';
+          this.slides[i].style.marginLeft = this.slidePadding + 'px';
+        }
 
         this.navigateToSlide().addStageTransition();
         return this;
@@ -1008,10 +1006,10 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'addStageTransition',
       value: function addStageTransition() {
-        var _this2 = this;
+        var _this = this;
 
         setTimeout(function () {
-          _this2.stage.style[_this2.transitionPrefix] = 'all .75s';
+          _this.stage.style[_this.transitionPrefix] = 'all .75s';
         }, 1);
         return this;
       }
