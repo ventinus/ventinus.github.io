@@ -341,9 +341,9 @@ define(['exports', 'module'], function (exports, module) {
           this.stage.appendChild(slide);
         }
 
-        this.slides = this.stage.children;
         this.slider.appendChild(this.stage);
         this.stage = this.slider.children[0];
+        this.slides = this.stage.children;
 
         return this;
       }
@@ -641,6 +641,7 @@ define(['exports', 'module'], function (exports, module) {
         this.dragThreshold = this.slider.offsetWidth / 4;
         this.slideBy = this.slideWidth + this.slidePadding;
 
+        // TODO: check if this.total is the same as this.slides.length
         for (var i = 0, j = this.slides.length; i < j; i++) {
           this.slides[i].style.width = this.slideWidth + 'px';
           this.slides[i].style.marginLeft = this.slidePadding + 'px';
