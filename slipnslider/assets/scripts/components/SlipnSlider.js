@@ -850,7 +850,7 @@ define(['exports', 'module'], function (exports, module) {
           var xMvt = Math.abs(this.startpoint - eData.pageX);
           if (xMvt > 20) {
             this.brokeHorizontalThreshold = true;
-            // e.preventDefault();
+            e.preventDefault();
           }
           if (!this.brokeHorizontalThreshold) {
             if (xMvt <= 20 && yMvt >= 10 && yMvt > xMvt) {
