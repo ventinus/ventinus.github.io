@@ -212,6 +212,7 @@ define(['exports', 'module'], function (exports, module) {
        * @type {Boolean}
        */
       this.wasDragged = false;
+      this.firstDrag = false;
     }
 
     // =========================================================
@@ -494,11 +495,11 @@ define(['exports', 'module'], function (exports, module) {
           }
         }
 
-        this.stage.addEventListener(this.pressStart, this.onDragStartHandler, true);
+        this.stage.addEventListener(this.pressStart, this.onDragStartHandler, false);
         this.stage.addEventListener('click', this.onSliderClickHandler, false);
 
-        window.addEventListener(this.pressMove, this.onDragHandler, true);
-        window.addEventListener(this.pressEnd, this.offDragHandler, true);
+        window.addEventListener(this.pressMove, this.onDragHandler, false);
+        window.addEventListener(this.pressEnd, this.offDragHandler, false);
 
         // check for not mobile to attach keystroke eventhandler
         if (this.pressStart === 'mousedown') {
@@ -802,6 +803,7 @@ define(['exports', 'module'], function (exports, module) {
 
         if( navigator.userAgent.match(/Android/i) ) {
           e.preventDefault();
+          this.firstDrag = true;
         }
 
         this.removeStageTransition();
@@ -827,7 +829,10 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDrag',
       value: function onDrag(e) {
-        // e.preventDefault();
+        if (this.firstDrag) {
+          e.preventDefault();
+          this.firstDrag = false;
+        }
 
         if (this.isTransitioning || !this.isDragging) {
           return this;
