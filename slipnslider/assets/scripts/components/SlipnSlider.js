@@ -1149,8 +1149,8 @@ define(['exports', 'module'], function (exports, module) {
             end = undefined,
             move = undefined;
         if ('ontouchstart' in window) {
-          start = 'touchstart mousedown';
-          end = 'touchend touchcancel';
+          start = 'touchstart';
+          end = 'touchend';
           move = 'touchmove';
         } else if (window.PointerEvent) {
           start = 'pointerdown';
