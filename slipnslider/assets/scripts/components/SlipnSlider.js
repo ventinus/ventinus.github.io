@@ -506,6 +506,10 @@ define(['exports', 'module'], function (exports, module) {
           window.addEventListener('keydown', this.keydownHandler, false);
         }
 
+        if( navigator.userAgent.match(/Android/i) ) {
+          this.stage.addEventListener('touchcancel', function(e) {e.preventDefault(); })
+        }
+
         return this;
       }
 
