@@ -212,7 +212,10 @@ define(['exports', 'module'], function (exports, module) {
        * @type {Boolean}
        */
       this.wasDragged = false;
-      this.isTouchDevice = false;
+
+      this.isMobileDevice = false;
+
+      this.isAndroid = false;
     }
 
     // =========================================================
@@ -796,6 +799,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDragStart',
       value: function onDragStart(e) {
+        // e.preventDefault();
         if (this.isTransitioning) {
           return this;
         }
@@ -807,10 +811,12 @@ define(['exports', 'module'], function (exports, module) {
         this.removeStageTransition();
         this.isDragging = true;
 
-        if (this.isTouchDevice) {
-          this.startpoint = e.touches[0].pageX
-          this.curYPos = e.touches[0].pageY;
+        // if (this.pressStart === 'touchstart') {
+        if (this.isMobileDevice) {
           this.brokeHorizontalThreshold = false;
+          var _eData = this.isAndroid ? e.touches[0] : e;
+          this.curYPos = _eData.pageY;
+          this.startpoint = _eData.pageX;
         } else {
           this.startpoint = e.pageX;
         }
@@ -835,21 +841,17 @@ define(['exports', 'module'], function (exports, module) {
 
         // flag for preventing default click event when slides are anchor tags
         this.wasDragged = true;
-        var eX, yX;
 
-        if (this.pressMove === 'touchmove') {
-          eX = e.touches[0].pageX;
-          eY = e.touches[0].pageY;
+        // if (this.pressMove === 'touchmove') {
+        if (this.isMobileDevice) {
           // Check to see if user is moving more vertically than horizontally
           // to then disable the drag
-          var yMvt = Math.abs(this.curYPos - e.touches[0].pageY);
-          var xMvt = Math.abs(this.startpoint - e.touches[0].pageX);
-          // alert(e.changedTouches[0].pageX);
-          // alert(e.changedTouches[0].pageY);
+          var _eData2 = this.isAndroid ? e.touches[0] : e;
+          var yMvt = Math.abs(this.curYPos - _eData2.pageY);
+          var xMvt = Math.abs(this.startpoint - _eData2.pageX);
           if (xMvt > 20) {
-            e.preventDefault();
-            // alert('preventDefault');
             this.brokeHorizontalThreshold = true;
+            e.preventDefault();
           }
           if (!this.brokeHorizontalThreshold) {
             if (xMvt <= 20 && yMvt >= 10 && yMvt > xMvt) {
@@ -860,11 +862,11 @@ define(['exports', 'module'], function (exports, module) {
             }
           }
         } else {
-          eX = e.pageX;
+          var _eData3 = e;
         }
 
         var currentPos = (this.activeSlideIndex * this.slideWidth + this.slidePadding * this.activeSlideIndex) * -1;
-        var movePos = currentPos - (this.startpoint - eX) * 0.7;
+        var movePos = currentPos - (this.startpoint - eData.pageX) * 0.7;
 
         if (!this.isInfiniteOverride) {
           // Dividing by 4 and multiplying by 0.75 allows a
@@ -894,12 +896,10 @@ define(['exports', 'module'], function (exports, module) {
         if (!this.isDragging) {
           return this;
         }
-
-        var eX = this.isTouchDevice ? e.touches[0].pageX : e.pageX;
-
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
-        var travelled = e !== undefined ? this.startpoint - eX : 0;
+        var eData = this.isAndroid ? e.touches[0] : e;
+        var travelled = e !== undefined ? this.startpoint - eData.pageX : 0;
 
         if (Math.abs(travelled) >= this.dragThreshold) {
           if (this.isInfiniteOverride) {
@@ -1163,7 +1163,10 @@ define(['exports', 'module'], function (exports, module) {
           start = 'touchstart';
           end = 'touchend';
           move = 'touchmove';
-          this.isTouchDevice = true;
+          this.isMobileDevice = true;
+          if (navigator.userAgent.match(/Android/i)) {
+            this.isAndroid = true;
+          }
         } else if (window.PointerEvent) {
           start = 'pointerdown';
           end = 'pointerup';
