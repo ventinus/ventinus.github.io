@@ -493,7 +493,9 @@ define(['exports', 'module'], function (exports, module) {
             this.navDots[i].addEventListener('click', this.onDotClickHandler, false);
           }
         }
-
+        alert(this.pressStart);
+        alert(this.pressMove);
+        alert(this.pressEnd);
         this.stage.addEventListener(this.pressStart, this.onDragStartHandler, false);
         this.stage.addEventListener('click', this.onSliderClickHandler, false);
 
