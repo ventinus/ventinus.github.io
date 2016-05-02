@@ -839,6 +839,7 @@ define(['exports', 'module'], function (exports, module) {
           var yMvt = Math.abs(this.curYPos - e.pageY);
           var xMvt = Math.abs(this.startpoint - e.pageX);
           if (xMvt > 20) {
+            alert('preventDefault');
             e.preventDefault();
             this.brokeHorizontalThreshold = true;
           }
