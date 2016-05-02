@@ -212,6 +212,7 @@ define(['exports', 'module'], function (exports, module) {
        * @type {Boolean}
        */
       this.wasDragged = false;
+      this.isTouchDevice = false;
     }
 
     // =========================================================
@@ -1152,6 +1153,7 @@ define(['exports', 'module'], function (exports, module) {
           start = 'touchstart';
           end = 'touchend';
           move = 'touchmove';
+          this.isTouchDevice = true;
         } else if (window.PointerEvent) {
           start = 'pointerdown';
           end = 'pointerup';
