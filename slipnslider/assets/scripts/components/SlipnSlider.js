@@ -838,8 +838,8 @@ define(['exports', 'module'], function (exports, module) {
           // to then disable the drag
           var yMvt = Math.abs(this.curYPos - e.pageY);
           var xMvt = Math.abs(this.startpoint - e.pageX);
-          alert(e.originalEvent.touches[0].pageX);
-          alert(e.originalEvent.touches[0].pageY);
+          alert(e.changedTouches[0].pageX);
+          alert(e.changedTouches[0].pageY);
           if (xMvt > 20) {
             alert('preventDefault');
             e.preventDefault();
