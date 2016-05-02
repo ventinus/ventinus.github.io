@@ -493,9 +493,7 @@ define(['exports', 'module'], function (exports, module) {
             this.navDots[i].addEventListener('click', this.onDotClickHandler, false);
           }
         }
-        alert(this.pressStart);
-        alert(this.pressMove);
-        alert(this.pressEnd);
+
         this.stage.addEventListener(this.pressStart, this.onDragStartHandler, false);
         this.stage.addEventListener('click', this.onSliderClickHandler, false);
 
@@ -829,7 +827,8 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDrag',
       value: function onDrag(e) {
-        e.preventDefault();
+        if (!this.wasDragged) { e.preventDefault(); }
+
         if (this.isTransitioning || !this.isDragging) {
           return this;
         }
