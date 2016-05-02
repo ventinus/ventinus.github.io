@@ -893,6 +893,9 @@ define(['exports', 'module'], function (exports, module) {
         if (!this.isDragging) {
           return this;
         }
+        if (this.isAndroid) {
+          e.preventDefault();
+        }
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
         var eData = this.isAndroid ? e.touches[0] : e;
