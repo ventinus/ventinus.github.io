@@ -494,11 +494,11 @@ define(['exports', 'module'], function (exports, module) {
           }
         }
 
-        this.stage.addEventListener(this.pressStart, this.onDragStartHandler, false);
+        this.stage.addEventListener(this.pressStart, this.onDragStartHandler, true);
         this.stage.addEventListener('click', this.onSliderClickHandler, false);
 
-        window.addEventListener(this.pressMove, this.onDragHandler, false);
-        window.addEventListener(this.pressEnd, this.offDragHandler, false);
+        window.addEventListener(this.pressMove, this.onDragHandler, true);
+        window.addEventListener(this.pressEnd, this.offDragHandler, true);
 
         // check for not mobile to attach keystroke eventhandler
         if (this.pressStart === 'mousedown') {
@@ -795,14 +795,15 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDragStart',
       value: function onDragStart(e) {
-        e.preventDefault();
+        // e.preventDefault();
         if (this.isTransitioning) {
           return this;
         }
 
-        // if( navigator.userAgent.match(/Android/i) ) {
-        //   e.preventDefault();
-        // }
+        if( navigator.userAgent.match(/Android/i) ) {
+          alert(true);
+          e.preventDefault();
+        }
 
         this.removeStageTransition();
         this.startpoint = e.pageX;
@@ -827,7 +828,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDrag',
       value: function onDrag(e) {
-        if (!this.wasDragged) { e.preventDefault(); }
+        // e.preventDefault();
 
         if (this.isTransitioning || !this.isDragging) {
           return this;
