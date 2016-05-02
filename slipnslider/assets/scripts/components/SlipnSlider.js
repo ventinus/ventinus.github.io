@@ -880,7 +880,9 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'offDrag',
       value: function offDrag(e) {
-        e.preventDefault();
+        if (this.brokeHorizontalThreshold) {
+          e.preventDefault();
+        }
         if (!this.isDragging) {
           return this;
         }
