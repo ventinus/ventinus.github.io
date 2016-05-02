@@ -835,16 +835,19 @@ define(['exports', 'module'], function (exports, module) {
 
         // flag for preventing default click event when slides are anchor tags
         this.wasDragged = true;
+        var eX, yX;
 
         if (this.pressMove === 'touchmove') {
+          eX = e.touches[0].pageX;
+          eY = e.touches[0].pageY;
           // Check to see if user is moving more vertically than horizontally
           // to then disable the drag
           var yMvt = Math.abs(this.curYPos - e.touches[0].pageY);
           var xMvt = Math.abs(this.startpoint - e.touches[0].pageX);
-          e.preventDefault();
           // alert(e.changedTouches[0].pageX);
           // alert(e.changedTouches[0].pageY);
           if (xMvt > 20) {
+            e.preventDefault();
             // alert('preventDefault');
             this.brokeHorizontalThreshold = true;
           }
@@ -856,10 +859,12 @@ define(['exports', 'module'], function (exports, module) {
               return this;
             }
           }
+        } else {
+          eX = e.pageX;
         }
 
         var currentPos = (this.activeSlideIndex * this.slideWidth + this.slidePadding * this.activeSlideIndex) * -1;
-        var movePos = currentPos - (this.startpoint - e.pageX) * 0.7;
+        var movePos = currentPos - (this.startpoint - eX) * 0.7;
 
         if (!this.isInfiniteOverride) {
           // Dividing by 4 and multiplying by 0.75 allows a
@@ -889,9 +894,12 @@ define(['exports', 'module'], function (exports, module) {
         if (!this.isDragging) {
           return this;
         }
+
+        eX = this.isTouchDevice ? e.touches[0].pageX : e.pageX;
+
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
-        var travelled = e !== undefined ? this.startpoint - e.pageX : 0;
+        var travelled = e !== undefined ? this.startpoint - eX : 0;
 
         if (Math.abs(travelled) >= this.dragThreshold) {
           if (this.isInfiniteOverride) {
