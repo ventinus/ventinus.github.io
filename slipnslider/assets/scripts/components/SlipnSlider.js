@@ -829,7 +829,7 @@ define(['exports', 'module'], function (exports, module) {
        */
     }, {
       key: 'prevent',
-      value: function(e) { e.preventDefault(); alert('prevent') }
+      value: function prevent(e) { e.preventDefault(); alert('prevent') }
     }, {
       key: 'onDrag',
       value: function onDrag(e) {
