@@ -803,8 +803,8 @@ define(['exports', 'module'], function (exports, module) {
 
         if( navigator.userAgent.match(/Android/i) ) {
           e.preventDefault();
-          this.firstDrag = true;
         }
+        this.firstDrag = true;
 
         this.removeStageTransition();
         this.startpoint = e.pageX;
