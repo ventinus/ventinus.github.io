@@ -804,7 +804,7 @@ define(['exports', 'module'], function (exports, module) {
         if( navigator.userAgent.match(/Android/i) ) {
           e.preventDefault();
           // this.firstDrag = true;
-          document.addEventListener("touchmove", this.prevent, false);
+          this.stage.addEventListener("touchmove", this.prevent, false);
         }
 
         this.removeStageTransition();
@@ -896,7 +896,7 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
         if( navigator.userAgent.match(/Android/i) ) {
-          document.removeEventListener("touchmove", this.prevent, false);
+          this.stage.removeEventListener("touchmove", this.prevent, false);
         }
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
