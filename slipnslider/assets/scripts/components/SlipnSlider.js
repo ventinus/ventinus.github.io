@@ -213,8 +213,18 @@ define(['exports', 'module'], function (exports, module) {
        */
       this.wasDragged = false;
 
+      /**
+       * Flag for determining if device is mobile or desktop.
+       * Defined by whether the device supports touch events
+       * @type {Boolean}
+       */
       this.isMobileDevice = false;
 
+      /**
+       * Flag for determining if device is android. Touch event
+       * data is different between iOs and android
+       * @type {Boolean}
+       */
       this.isAndroid = false;
     }
 
@@ -505,7 +515,7 @@ define(['exports', 'module'], function (exports, module) {
         window.addEventListener(this.pressEnd, this.offDragHandler, false);
 
         // check for not mobile to attach keystroke eventhandler
-        if (this.pressStart === 'mousedown') {
+        if (!this.isMobileDevice) {
           window.addEventListener('keydown', this.keydownHandler, false);
         }
 
@@ -545,7 +555,7 @@ define(['exports', 'module'], function (exports, module) {
         window.removeEventListener(this.pressEnd, this.offDragHandler, false);
         window.removeEventListener('resize', this.onResizeHandler, false);
 
-        if (this.pressStart === 'mousedown') {
+        if (!this.isMobileDevice) {
           window.removeEventListener('keydown', this.keydownHandler, false);
         }
 
@@ -799,19 +809,13 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDragStart',
       value: function onDragStart(e) {
-        // e.preventDefault();
         if (this.isTransitioning) {
           return this;
         }
 
-        // if( navigator.userAgent.match(/Android/i) ) {
-        //   e.preventDefault();
-        // }
-
         this.removeStageTransition();
         this.isDragging = true;
 
-        // if (this.pressStart === 'touchstart') {
         var eData = this.isAndroid ? e.touches[0] : e;
 
         if (this.isMobileDevice) {
@@ -842,7 +846,6 @@ define(['exports', 'module'], function (exports, module) {
         // flag for preventing default click event when slides are anchor tags
         this.wasDragged = true;
 
-        // if (this.pressMove === 'touchmove') {
         if (this.isMobileDevice) {
           // Check to see if user is moving more vertically than horizontally
           // to then disable the drag
