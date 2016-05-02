@@ -801,7 +801,6 @@ define(['exports', 'module'], function (exports, module) {
         }
 
         if( navigator.userAgent.match(/Android/i) ) {
-          alert(true);
           e.preventDefault();
         }
 
