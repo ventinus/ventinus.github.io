@@ -805,12 +805,14 @@ define(['exports', 'module'], function (exports, module) {
         // }
 
         this.removeStageTransition();
-        this.startpoint = e.pageX;
         this.isDragging = true;
 
-        if (this.pressStart === 'touchstart') {
-          this.curYPos = e.pageY;
+        if (this.isTouchDevice) {
+          this.startpoint = e.changedTouches[0].pageX
+          this.curYPos = e.changedTouches[0].pageY;
           this.brokeHorizontalThreshold = false;
+        } else {
+          this.startpoint = e.pageX;
         }
 
         return this;
@@ -837,12 +839,12 @@ define(['exports', 'module'], function (exports, module) {
         if (this.pressMove === 'touchmove') {
           // Check to see if user is moving more vertically than horizontally
           // to then disable the drag
-          var yMvt = Math.abs(this.curYPos - e.pageY);
-          var xMvt = Math.abs(this.startpoint - e.pageX);
-          alert(e.changedTouches[0].pageX);
-          alert(e.changedTouches[0].pageY);
+          var yMvt = Math.abs(this.curYPos - e.changedTouches[0].pageY);
+          var xMvt = Math.abs(this.startpoint - e.changedTouches[0].pageX);
+          // alert(e.changedTouches[0].pageX);
+          // alert(e.changedTouches[0].pageY);
           if (xMvt > 20) {
-            alert('preventDefault');
+            // alert('preventDefault');
             e.preventDefault();
             this.brokeHorizontalThreshold = true;
           }
