@@ -830,6 +830,7 @@ define(['exports', 'module'], function (exports, module) {
       key: 'onDrag',
       value: function onDrag(e) {
         if (this.firstDrag) {
+          console.log('firstdrag');
           e.preventDefault();
           this.firstDrag = false;
         }
