@@ -895,7 +895,7 @@ define(['exports', 'module'], function (exports, module) {
           return this;
         }
 
-        eX = this.isTouchDevice ? e.touches[0].pageX : e.pageX;
+        var eX = this.isTouchDevice ? e.touches[0].pageX : e.pageX;
 
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
