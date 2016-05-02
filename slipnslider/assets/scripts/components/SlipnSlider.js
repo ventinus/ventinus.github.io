@@ -838,7 +838,7 @@ define(['exports', 'module'], function (exports, module) {
         if (this.isTransitioning || !this.isDragging) {
           return this;
         }
-        var eData = this.isAndroid ? e.touches[0] : e;
+        var eData = this.isAndroid ? e.changedTouches[0] : e;
         // flag for preventing default click event when slides are anchor tags
         this.wasDragged = true;
 
@@ -850,7 +850,7 @@ define(['exports', 'module'], function (exports, module) {
           var xMvt = Math.abs(this.startpoint - eData.pageX);
           if (xMvt > 20) {
             this.brokeHorizontalThreshold = true;
-            e.preventDefault();
+            // e.preventDefault();
           }
           if (!this.brokeHorizontalThreshold) {
             if (xMvt <= 20 && yMvt >= 10 && yMvt > xMvt) {
@@ -893,12 +893,10 @@ define(['exports', 'module'], function (exports, module) {
         if (!this.isDragging) {
           return this;
         }
-        if (this.isAndroid) {
-          e.preventDefault();
-        }
+        // if (this.isAndroid) { e.preventDefault(); }
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
-        var eData = this.isAndroid ? e.touches[0] : e;
+        var eData = this.isAndroid ? e.changedTouches[0] : e;
         var travelled = e !== undefined ? this.startpoint - eData.pageX : 0;
 
         if (Math.abs(travelled) >= this.dragThreshold) {
