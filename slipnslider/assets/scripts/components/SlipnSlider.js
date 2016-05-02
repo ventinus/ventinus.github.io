@@ -812,14 +812,14 @@ define(['exports', 'module'], function (exports, module) {
         this.isDragging = true;
 
         // if (this.pressStart === 'touchstart') {
+        var eData = this.isAndroid ? e.touches[0] : e;
+
         if (this.isMobileDevice) {
           this.brokeHorizontalThreshold = false;
-          var _eData = this.isAndroid ? e.touches[0] : e;
-          this.curYPos = _eData.pageY;
-          this.startpoint = _eData.pageX;
-        } else {
-          this.startpoint = e.pageX;
+          this.curYPos = eData.pageY;
         }
+
+        this.startpoint = eData.pageX;
 
         return this;
       }
@@ -838,7 +838,7 @@ define(['exports', 'module'], function (exports, module) {
         if (this.isTransitioning || !this.isDragging) {
           return this;
         }
-
+        var eData = this.isAndroid ? e.touches[0] : e;
         // flag for preventing default click event when slides are anchor tags
         this.wasDragged = true;
 
@@ -846,9 +846,8 @@ define(['exports', 'module'], function (exports, module) {
         if (this.isMobileDevice) {
           // Check to see if user is moving more vertically than horizontally
           // to then disable the drag
-          var _eData2 = this.isAndroid ? e.touches[0] : e;
-          var yMvt = Math.abs(this.curYPos - _eData2.pageY);
-          var xMvt = Math.abs(this.startpoint - _eData2.pageX);
+          var yMvt = Math.abs(this.curYPos - eData.pageY);
+          var xMvt = Math.abs(this.startpoint - eData.pageX);
           if (xMvt > 20) {
             this.brokeHorizontalThreshold = true;
             e.preventDefault();
@@ -861,8 +860,6 @@ define(['exports', 'module'], function (exports, module) {
               return this;
             }
           }
-        } else {
-          var _eData3 = e;
         }
 
         var currentPos = (this.activeSlideIndex * this.slideWidth + this.slidePadding * this.activeSlideIndex) * -1;
