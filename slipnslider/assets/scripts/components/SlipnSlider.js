@@ -506,10 +506,6 @@ define(['exports', 'module'], function (exports, module) {
           window.addEventListener('keydown', this.keydownHandler, false);
         }
 
-        if( navigator.userAgent.match(/Android/i) ) {
-          this.stage.addEventListener('touchcancel', function(e) {e.preventDefault(); })
-        }
-
         return this;
       }
 
@@ -807,8 +803,9 @@ define(['exports', 'module'], function (exports, module) {
 
         if( navigator.userAgent.match(/Android/i) ) {
           e.preventDefault();
+          // this.firstDrag = true;
+          document.addEventListener("touchmove", this.prevent, false);
         }
-        this.firstDrag = true;
 
         this.removeStageTransition();
         this.startpoint = e.pageX;
@@ -831,13 +828,16 @@ define(['exports', 'module'], function (exports, module) {
        * @return {SlipnSlider}
        */
     }, {
+      key: 'prevent',
+      value: function(e) { e.preventDefault(); }
+    }, {
       key: 'onDrag',
       value: function onDrag(e) {
-        if (this.firstDrag) {
-          console.log('firstdrag');
-          e.preventDefault();
-          this.firstDrag = false;
-        }
+        // if (this.firstDrag) {
+        //   console.log('firstdrag');
+        //   e.preventDefault();
+        //   this.firstDrag = false;
+        // }
 
         if (this.isTransitioning || !this.isDragging) {
           return this;
@@ -894,6 +894,9 @@ define(['exports', 'module'], function (exports, module) {
       value: function offDrag(e) {
         if (!this.isDragging) {
           return this;
+        }
+        if( navigator.userAgent.match(/Android/i) ) {
+          document.removeEventListener("touchmove", this.prevent, false);
         }
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
