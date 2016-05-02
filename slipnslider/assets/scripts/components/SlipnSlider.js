@@ -212,7 +212,6 @@ define(['exports', 'module'], function (exports, module) {
        * @type {Boolean}
        */
       this.wasDragged = false;
-      this.firstDrag = false;
     }
 
     // =========================================================
@@ -796,16 +795,13 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDragStart',
       value: function onDragStart(e) {
-        // e.preventDefault();
         if (this.isTransitioning) {
           return this;
         }
 
-        if( navigator.userAgent.match(/Android/i) ) {
-          e.preventDefault();
-          // this.firstDrag = true;
-          this.stage.addEventListener("touchmove", this.prevent, false);
-        }
+        // if( navigator.userAgent.match(/Android/i) ) {
+        //   e.preventDefault();
+        // }
 
         this.removeStageTransition();
         this.startpoint = e.pageX;
@@ -828,17 +824,8 @@ define(['exports', 'module'], function (exports, module) {
        * @return {SlipnSlider}
        */
     }, {
-      key: 'prevent',
-      value: function prevent(e) { e.preventDefault(); }
-    }, {
       key: 'onDrag',
       value: function onDrag(e) {
-        // if (this.firstDrag) {
-        //   console.log('firstdrag');
-        //   e.preventDefault();
-        //   this.firstDrag = false;
-        // }
-
         if (this.isTransitioning || !this.isDragging) {
           return this;
         }
@@ -852,6 +839,7 @@ define(['exports', 'module'], function (exports, module) {
           var yMvt = Math.abs(this.curYPos - e.pageY);
           var xMvt = Math.abs(this.startpoint - e.pageX);
           if (xMvt > 20) {
+            e.preventDefault();
             this.brokeHorizontalThreshold = true;
           }
           if (!this.brokeHorizontalThreshold) {
@@ -892,11 +880,9 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'offDrag',
       value: function offDrag(e) {
+        e.preventDefault();
         if (!this.isDragging) {
           return this;
-        }
-        if( navigator.userAgent.match(/Android/i) ) {
-          this.stage.removeEventListener("touchmove", this.prevent, false);
         }
         this.isDragging = false;
         this.stage.style[this.transitionPrefix] = 'all .75s';
