@@ -826,6 +826,7 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'onDrag',
       value: function onDrag(e) {
+        e.preventDefault();
         if (this.isTransitioning || !this.isDragging) {
           return this;
         }
