@@ -1,0 +1,284 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  perspective: 1250px;
+  -webkit-animation: zoom 1800ms ease-in 1800ms 1 normal forwards;
+  -o-animation: zoom 1800ms ease-in 1800ms 1 normal forwards;
+  animation: zoom 1800ms ease-in 1800ms 1 normal forwards;
+}
+
+.preloader__border-horiz:before,
+.preloader__border-horiz:after,
+.preloader__border-vert:before,
+.preloader__border-vert:after {
+  background-color: #000;
+  position: absolute;
+  content: "";
+  display: block;
+}
+
+.preloader__border-horiz:before,
+.preloader__border-horiz:after {
+  left: 0;
+  right: 0;
+}
+.preloader__border-horiz:before {
+  top: 0;
+  bottom: calc(50% + 200px);
+}
+.preloader__border-horiz:after {
+  bottom: 0;
+  top: calc(50% + 200px);
+}
+
+.preloader__border-vert:before,
+.preloader__border-vert:after {
+  top: 0;
+  bottom: 0;
+}
+.preloader__border-vert:before {
+  left: 0;
+  right: calc(50% + 125px);
+}
+.preloader__border-vert:after {
+  right: 0;
+  left: calc(50% + 125px);
+}
+
+
+.preloader__door {
+  width: 250px;
+  height: 400px;
+  position: absolute;
+  background-color: #000;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transform-origin: left;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-animation: swing 1300ms ease-in-out 1400ms 1 normal forwards;
+  -o-animation: swing 1300ms ease-in-out 1400ms 1 normal forwards;
+  animation: swing 1300ms ease-in-out 1400ms 1 normal forwards;
+}
+
+.preloader__door__outline-vert:before,
+.preloader__door__outline-vert:after,
+.preloader__door__outline-horiz:before,
+.preloader__door__outline-horiz:after {
+  content: "";
+  position: absolute;
+  background-color: #FFF;
+  -webkit-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+}
+.preloader__door__outline-horiz:after {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+.preloader__door__outline-vert:before {
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  -webkit-animation: left-outline 300ms ease-in-out 200ms 1 normal forwards;
+  -o-animation: left-outline 300ms ease-in-out 200ms 1 normal forwards;
+  animation: left-outline 300ms ease-in-out 200ms 1 normal forwards;
+}
+.preloader__door__outline-horiz:before {
+  top: 0;
+  left: 0;
+  -webkit-animation: top-outline 400ms ease-in-out 500ms 1 normal forwards;
+  -o-animation: top-outline 400ms ease-in-out 500ms 1 normal forwards;
+  animation: top-outline 400ms ease-in-out 500ms 1 normal forwards;
+  height: 1px;
+}
+.preloader__door__outline-vert:after {
+  top: 0;
+  right: 0;
+  width: 1px;
+  -webkit-animation: right-outline 300ms ease-in-out 900ms 1 normal forwards;
+  -o-animation: right-outline 300ms ease-in-out 900ms 1 normal forwards;
+  animation: right-outline 300ms ease-in-out 900ms 1 normal forwards;
+}
+
+.preloader__door__knob {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+}
+
+.svg-circle {
+  stroke-dasharray: 63;
+  stroke-dashoffset: 63;
+  animation: knob 5s linear;
+  -webkit-animation: knob 200ms ease-in-out 1200ms 1 normal forwards;
+  -o-animation: knob 200ms ease-in-out 1200ms 1 normal forwards;
+  animation: knob 200ms ease-in-out 1200ms 1 normal forwards;
+}
+
+
+/******************************************
+zoom through door animations
+******************************************/
+
+/*@media screen and (min-width: 890px) {*/
+  @-webkit-keyframes zoom {
+    0%    { -webkit-transform: scale(1); }
+    99%   { opacity: 1; -webkit-transform: scale(7); }
+    100%  { opacity: 0; -webkit-transform: translate(-100000%, -100000%) scale(0); }
+  }
+  @-moz-keyframes zoom {
+    0%    { transform: scale(1); }
+    99%   { opacity: 1; transform: scale(7); }
+    100%  { opacity: 0; transform: translate(-100000%, -100000%) scale(0); }
+  }
+  @-ms-keyframes zoom {
+    0%    { -ms-transform: scale(1); }
+    99%   { opacity: 1; -ms-transform: scale(7); }
+    100%  { opacity: 0; -ms-transform: translate(-100000%, -100000%) scale(0); }
+  }
+  @-o-keyframes zoom {
+    0%    { transform: scale(1); }
+    99%   { opacity: 1; transform: scale(7); }
+    100%  { opacity: 0; transform: translate(-100000%, -100000%) scale(0); }
+  }
+  @keyframes zoom {
+    0% { transform: scale(1); }
+    99% { opacity: 1; transform: scale(7); }
+    100% { opacity: 0; transform: translate(-100000%, -100000%) scale(0); }
+  }
+/*}*/
+
+/******************************************
+door swinging animations
+******************************************/
+@-webkit-keyframes swing {
+  0% { -webkit-transform: translate(-50%, -50%); }
+  100% { -webkit-transform: translate(-50%, -50%) rotateY(90deg); }
+}
+@-moz-keyframes swing {
+  0% { transform: translate(-50%, -50%); }
+  100% { transform: translate(-50%, -50%) rotateY(90deg); }
+}
+@-ms-keyframes swing {
+  0% { -ms-transform: translate(-50%, -50%); }
+  100% { -ms-transform: translate(-50%, -50%) rotateY(90deg); }
+}
+@-o-keyframes swing {
+  0% { transform: translate(-50%, -50%); }
+  100% { transform: translate(-50%, -50%) rotateY(90deg); }
+}
+@keyframes swing {
+  0% { transform: translate(-50%, -50%); }
+  100% { transform: translate(-50%, -50%) rotateY(90deg); }
+}
+
+/******************************************
+door knob drawing animations
+******************************************/
+@-webkit-keyframes knob {
+  from { stroke-dashoffset: 63; }
+  to { stroke-dashoffset: 0; }
+}
+@-moz-keyframes knob {
+  from { stroke-dashoffset: 63; }
+  to { stroke-dashoffset: 0; }
+}
+@-ms-keyframes knob {
+  from { stroke-dashoffset: 63; }
+  to { stroke-dashoffset: 0; }
+}
+@-o-keyframes knob {
+  from { stroke-dashoffset: 63; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes knob {
+  from { stroke-dashoffset: 63; }
+  to { stroke-dashoffset: 0; }
+}
+
+/******************************************
+door drawing animations
+******************************************/
+
+@-webkit-keyframes left-outline {
+  0%    { top: 100%; }
+  100%  { top: 0; }
+}
+@-moz-keyframes left-outline {
+  0%    { top: 100%; }
+  100%  { top: 0; }
+}
+@-ms-keyframes left-outline {
+  0%    { top: 100%; }
+  100%  { top: 0; }
+}
+@-o-keyframes left-outline {
+  0%    { top: 100%; }
+  100%  { top: 0; }
+}
+@keyframes left-outline {
+  0%    { top: 100%; }
+  100%  { top: 0; }
+}
+
+@-webkit-keyframes top-outline {
+  0%    { right: 100%; }
+  100%  { right: 0; }
+}
+@-moz-keyframes top-outline {
+  0%    { right: 100%; }
+  100%  { right: 0; }
+}
+@-ms-keyframes top-outline {
+  0%    { right: 100%; }
+  100%  { right: 0; }
+}
+@-o-keyframes top-outline {
+  0%    { right: 100%; }
+  100%  { right: 0; }
+}
+@keyframes top-outline {
+  0%    { right: 100%; }
+  100%  { right: 0; }
+}
+
+@-webkit-keyframes right-outline {
+  0%    { bottom: 100%; }
+  100%  { bottom: 0; }
+}
+@-moz-keyframes right-outline {
+  0%    { bottom: 100%; }
+  100%  { bottom: 0; }
+}
+@-ms-keyframes right-outline {
+  0%    { bottom: 100%; }
+  100%  { bottom: 0; }
+}
+@-o-keyframes right-outline {
+  0%    { bottom: 100%; }
+  100%  { bottom: 0; }
+}
+@keyframes right-outline {
+  0%    { bottom: 100%; }
+  100%  { bottom: 0; }
+}
+
+
