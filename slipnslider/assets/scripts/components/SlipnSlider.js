@@ -39,10 +39,10 @@ define(['exports', 'module'], function (exports, module) {
         slidePadding: 10,
         slidesPerPage: 1,
         prevNavigationCallback: function prevNavigationCallback() {
-          // console.log('prev callback');
+          console.log('prev callback');
         },
         nextNavigationCallback: function nextNavigationCallback() {
-          // console.log('next callback');
+          console.log('next callback');
         },
         responsive: {}
       };
@@ -1199,6 +1199,11 @@ define(['exports', 'module'], function (exports, module) {
     }, {
       key: 'init',
       value: function init() {
+        if (!this.slider) {
+          console.warn("Could not find slider element. Aborting slipnslider initialization.");
+          return this;
+        }
+
         console.time("init");
         this.determineBrowserEvents().takeUserOptions().parseResponsive().setStage().calcInitialProps().createDots().createControls().setupInfiniteSlider().defineSizes().navigateToSlide().addStageTransition().bindTransitionEvents().addEventHandlers().enable();
 
