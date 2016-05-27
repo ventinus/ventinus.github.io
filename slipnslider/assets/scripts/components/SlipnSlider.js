@@ -1200,7 +1200,7 @@ define(['exports', 'module'], function (exports, module) {
       key: 'init',
       value: function init() {
         if (!this.slider) {
-          console.warn("Could not find slider element. Aborting slipnslider initialization.");
+          console.warn("Slider element is not found or parameter is missing. Aborting slipnslider initialization.");
           return this;
         }
 
