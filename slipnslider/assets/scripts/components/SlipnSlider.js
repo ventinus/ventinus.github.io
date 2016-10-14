@@ -42,10 +42,10 @@ define(['exports', 'module'], function (exports, module) {
         slidePadding: 10,
         slidesPerPage: 1,
         prevNavigationCallback: function prevNavigationCallback(direction) {
-          console.log('prev callback: going ' + diretion + ' -1');
+          console.log('prev callback: going ' + direction + ' -1');
         },
         nextNavigationCallback: function nextNavigationCallback(direction) {
-          console.log('next callback: going ' + diretion + ' +1');
+          console.log('next callback: going ' + direction + ' +1');
         },
         responsive: {}
       };
@@ -711,7 +711,6 @@ define(['exports', 'module'], function (exports, module) {
         if (this.isTransitioning) {
           return this;
         }
-        
         this.onTransitionStart();
 
         if (direction) {
@@ -747,7 +746,6 @@ define(['exports', 'module'], function (exports, module) {
           }
 
         this.navigateToSlide();
-
         return this;
       }
 
