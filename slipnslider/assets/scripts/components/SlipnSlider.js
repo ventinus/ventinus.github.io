@@ -711,6 +711,7 @@ define(['exports', 'module'], function (exports, module) {
         if (this.isTransitioning) {
           return this;
         }
+        
         this.onTransitionStart();
 
         if (direction) {
@@ -746,6 +747,7 @@ define(['exports', 'module'], function (exports, module) {
           }
 
         this.navigateToSlide();
+
         return this;
       }
 
