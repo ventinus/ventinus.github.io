@@ -3,6 +3,7 @@ define(['exports', 'module'], function (exports, module) {
   //  autoplay, slides to show at a time, paging/how they transition (flowing behind
   //  instead of strictly left and right)
   //  currently takes about 7.6ms to tear down and rebuild in chrome
+  // - add option to not wrap when not infinite so nav btns get disabled at beginning and end
 
   'use strict';
 
@@ -11,7 +12,9 @@ define(['exports', 'module'], function (exports, module) {
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
   var SlipnSlider = (function () {
-    function SlipnSlider(element, options) {
+    function SlipnSlider(element) {
+      var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
       _classCallCheck(this, SlipnSlider);
 
       /**
@@ -38,11 +41,11 @@ define(['exports', 'module'], function (exports, module) {
         stageElement: 'div',
         slidePadding: 10,
         slidesPerPage: 1,
-        prevNavigationCallback: function prevNavigationCallback() {
-          console.log('prev callback');
+        prevNavigationCallback: function prevNavigationCallback(direction) {
+          console.log('prev callback: going ' + diretion + ' -1');
         },
-        nextNavigationCallback: function nextNavigationCallback() {
-          console.log('next callback');
+        nextNavigationCallback: function nextNavigationCallback(direction) {
+          console.log('next callback: going ' + diretion + ' +1');
         },
         responsive: {}
       };
@@ -243,7 +246,7 @@ define(['exports', 'module'], function (exports, module) {
     _createClass(SlipnSlider, [{
       key: 'takeUserOptions',
       value: function takeUserOptions() {
-        this.options = this.options || {};
+        // TODO: see about using hasOwnProperty
         for (var option in this.optionableProperties) {
           if (this.optionableProperties[option] !== undefined && typeof this.optionableProperties[option] === typeof this.options[option]) {
             this[option] = this.options[option];
@@ -711,9 +714,9 @@ define(['exports', 'module'], function (exports, module) {
         this.onTransitionStart();
 
         if (direction) {
-          this.nextNavigationCallback();
+          this.nextNavigationCallback(direction);
         } else {
-          this.prevNavigationCallback();
+          this.prevNavigationCallback(direction);
         }
 
         if (direction && this.atLastSlide()) {
