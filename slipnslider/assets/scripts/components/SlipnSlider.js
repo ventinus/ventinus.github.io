@@ -248,10 +248,12 @@ define(['exports', 'module'], function (exports, module) {
       value: function takeUserOptions() {
         // TODO: see about using hasOwnProperty
         for (var option in this.optionableProperties) {
-          if (this.optionableProperties[option] !== undefined && typeof this.optionableProperties[option] === typeof this.options[option]) {
-            this[option] = this.options[option];
-          } else {
-            this[option] = this.optionableProperties[option];
+          if (this.optionableProperties.hasOwnProperty(option)) {
+            if (this.optionableProperties[option] !== undefined && typeof this.optionableProperties[option] === typeof this.options[option]) {
+              this[option] = this.options[option];
+            } else {
+              this[option] = this.optionableProperties[option];
+            }
           }
         }
 
@@ -268,10 +270,12 @@ define(['exports', 'module'], function (exports, module) {
       value: function parseResponsive() {
         var windowWidth = window.innerWidth;
         for (var breakpoint in this.responsive) {
-          breakpoint = parseInt(breakpoint);
-          this.breakpoints.push(breakpoint);
-          if (breakpoint < windowWidth) {
-            this.currentBreakpoint = breakpoint;
+          if (this.responsive.hasOwnProperty(breakpoint)) {
+            breakpoint = parseInt(breakpoint);
+            this.breakpoints.push(breakpoint);
+            if (breakpoint < windowWidth) {
+              this.currentBreakpoint = breakpoint;
+            }
           }
         }
 
