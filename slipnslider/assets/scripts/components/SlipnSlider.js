@@ -271,7 +271,7 @@ define(['exports', 'module'], function (exports, module) {
         var windowWidth = window.innerWidth;
         for (var breakpoint in this.responsive) {
           if (this.responsive.hasOwnProperty(breakpoint)) {
-            breakpoint = parseInt(breakpoint);
+            breakpoint = +breakpoint;
             this.breakpoints.push(breakpoint);
             if (breakpoint < windowWidth) {
               this.currentBreakpoint = breakpoint;
