@@ -35,7 +35,7 @@ export class App extends React.Component {
     super(props);
 
     this.state = {
-      title: props.sdk.entry.fields.title.getValue(),
+      title: props.sdk.entry.fields.title.getValue()
       // body: props.sdk.entry.fields.body.getValue(),
       // abstract: props.sdk.entry.fields.abstract.getValue(),
       // hasAbstract: props.sdk.entry.fields.hasAbstract.getValue() || false
@@ -47,6 +47,26 @@ export class App extends React.Component {
     this.setState({ title: value });
     this.props.sdk.entry.fields.title.setValue(value);
   };
+
+  componentDidMount() {
+    this.props.extension.space.getContentTypes().then(({ items: allContentTypes }) => {
+      const contentTypeId = this.props.extension.entry.getSys().contentType.sys.id;
+      const contentType = allContentTypes.find(ct => contentTypeId === ct.sys.id);
+
+      // Store content type details of each field in a map,
+      // so we can check if a field contains list of child entries while
+      // looping through the field values
+      const fieldMap = {};
+      contentType.fields.forEach(field => {
+        fieldMap[field.id] = field;
+      });
+
+      console.log('contentTypeId', contentTypeId);
+      console.log('contentType', contentType);
+      console.log('fieldMap', fieldMap);
+      console.log('fields', this.props.extension.entry.fields);
+    });
+  }
 
   // onBodyChangeHandler = event => {
   //   const value = event.target.value;
@@ -67,7 +87,7 @@ export class App extends React.Component {
   // };
 
   render() {
-    console.log('render')
+    console.log('render');
     return (
       <Form className="f36-margin--l">
         <DisplayText>Entry extension demo</DisplayText>
@@ -120,7 +140,7 @@ export class App extends React.Component {
 */
 
 init(sdk => {
-  console.log(sdk)
+  console.log(sdk);
   if (sdk.location.is(locations.LOCATION_ENTRY_EDITOR)) {
     render(<App sdk={sdk} />, document.getElementById('root'));
   }
