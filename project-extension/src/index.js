@@ -40,6 +40,7 @@ export class App extends React.Component {
       // abstract: props.sdk.entry.fields.abstract.getValue(),
       // hasAbstract: props.sdk.entry.fields.hasAbstract.getValue() || false
     };
+    window.sdk = sdk
   }
 
   onTitleChangeHandler = event => {
@@ -50,7 +51,7 @@ export class App extends React.Component {
 
   componentDidMount() {
     this.props.extension.space.getContentTypes().then(({ items: allContentTypes }) => {
-      const contentTypeId = this.props.extension.entry.getSys().contentType.sys.id;
+      const contentTypeId = this.props.sdk.entry.getSys().contentType.sys.id;
       const contentType = allContentTypes.find(ct => contentTypeId === ct.sys.id);
 
       // Store content type details of each field in a map,
@@ -87,7 +88,6 @@ export class App extends React.Component {
   // };
 
   render() {
-    console.log('render');
     return (
       <Form className="f36-margin--l">
         <DisplayText>Entry extension demo</DisplayText>
