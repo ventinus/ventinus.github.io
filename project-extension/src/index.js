@@ -50,7 +50,7 @@ export class App extends React.Component {
   };
 
   componentDidMount() {
-    this.props.extension.space.getContentTypes().then(({ items: allContentTypes }) => {
+    this.props.sdk.space.getContentTypes().then(({ items: allContentTypes }) => {
       const contentTypeId = this.props.sdk.entry.getSys().contentType.sys.id;
       const contentType = allContentTypes.find(ct => contentTypeId === ct.sys.id);
 
@@ -65,7 +65,7 @@ export class App extends React.Component {
       console.log('contentTypeId', contentTypeId);
       console.log('contentType', contentType);
       console.log('fieldMap', fieldMap);
-      console.log('fields', this.props.extension.entry.fields);
+      console.log('fields', this.props.sdk.entry.fields);
     });
   }
 
