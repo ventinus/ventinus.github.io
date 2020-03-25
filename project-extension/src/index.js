@@ -40,7 +40,7 @@ export class App extends React.Component {
       // abstract: props.sdk.entry.fields.abstract.getValue(),
       // hasAbstract: props.sdk.entry.fields.hasAbstract.getValue() || false
     };
-    window.sdk = sdk
+    window.sdk = props.sdk
   }
 
   onTitleChangeHandler = event => {
